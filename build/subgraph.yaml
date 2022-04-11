@@ -1,0 +1,36 @@
+specVersion: 0.0.2
+schema:
+  file: l1.graphql
+dataSources:
+  - kind: ethereum
+    name: veSPA
+    network: mainnet
+    source:
+      address: "0xbF82a3212e13b2d407D10f5107b5C8404dE7F403"
+      abi: veSPA
+      startBlock: 14527094
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - GlobalCheckpoint
+        - OwnershipTransferred
+        - Supply
+        - UserCheckpoint
+        - Withdraw
+      abis:
+        - name: veSPA
+          file: veSPA/abis/veSPA.json
+      eventHandlers:
+        - event: GlobalCheckpoint(address,uint256)
+          handler: handleGlobalCheckpoint
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Supply(uint256,uint256)
+          handler: handleSupply
+        - event: UserCheckpoint(indexed uint8,bool,indexed address,uint256,indexed uint256)
+          handler: handleUserCheckpoint
+        - event: Withdraw(indexed address,uint256,uint256)
+          handler: handleWithdraw
+      file: veSPA/veSPA.wasm

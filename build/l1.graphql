@@ -1,0 +1,49 @@
+type veSPAGlobalCheckpointEvent @entity {
+  id: ID!
+  caller: Bytes!
+  epoch: BigDecimal!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+type veSPASupplyEvent @entity {
+  id: ID!
+  previousSupply: BigDecimal!
+  actualSupply: BigDecimal!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+type veSPAUserCheckpointEvent @entity {
+  id: ID!
+  provider: Bytes!
+  depositedValue: BigDecimal!
+  autoCooldown: Boolean!
+  expiryUnix: BigInt!
+  expiry:String!
+  actionType: String!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+type veSPAWithdrawEvent @entity {
+  id: ID!
+  provider: Bytes!
+  withdrawTime: BigInt!
+  withdrawnValue: BigDecimal!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}

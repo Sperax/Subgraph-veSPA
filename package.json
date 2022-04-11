@@ -2,12 +2,21 @@
   "name": "veSPA-l2",
   "license": "UNLICENSED",
   "scripts": {
-    "codegen": "graph codegen",
-    "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ bayou020/veSPA-l2",
-    "create-local": "graph create --node http://localhost:8020/ bayou020/veSPA-l2",
-    "remove-local": "graph remove --node http://localhost:8020/ bayou020/veSPA-l2",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 bayou020/veSPA-l2"
+    "codegen-l1": "graph codegen subgraph_L1.yaml",
+    "build-l1": "graph build subgraph_L1.yaml",
+    "deploy-l1": "graph deploy --product hosted-service sperax/vespa-eth subgraph_L1.yaml",
+    "create-local-l1": "graph create --node http://localhost:8020/ sperax/vespa-eth subgraph_L1.yaml",
+    "remove-local-l1": "graph remove --node http://localhost:8020/ sperax/vespa-eth subgraph_L1.yaml",
+    "deploy-local-l1": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 sperax/vespa-eth subgraph_L1.yaml",
+    
+    "codegen-l2": "graph codegen subgraph_L2.yaml",
+    "build-l2": "graph build subgraph_L2.yaml",
+    "deploy-l2": "graph deploy --product hosted-service sperax/vespa-arbione subgraph_L2.yaml",
+    "create-local-l2": "graph create  --node http://localhost:8020/ sperax/veSPA-l2 subgraph_L2.yaml ",
+    "remove-local-l2": "graph remove  --node http://localhost:8020/ sperax/veSPA-l2 subgraph_L2.yaml ",
+    "deploy-local-l2": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 sperax/veSPA-l2 subgraph_L2.yaml "
+    
+  
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.26.0",
