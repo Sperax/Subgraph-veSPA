@@ -34,3 +34,42 @@ dataSources:
         - event: Withdraw(indexed address,uint256,uint256)
           handler: handleWithdraw
       file: ./src/veSPAMapping_L1.ts
+
+  - kind: ethereum
+    name: RewardDistributor_v1
+    network: mainnet
+    source:
+      address: "0xa61DD4480BE2582283Afa54E461A1d3643b36040"
+      abi: RewardDistributor_v1
+      startBlock: 14574618
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - CheckpointAllowed
+        - Claimed
+        - Killed
+        - MaxIterationsUpdated
+        - OwnershipTransferred
+        - RecoveredERC20
+        - RewardsCheckpointed
+      abis:
+        - name: RewardDistributor_v1
+          file: ./abis/RewardDistributor_v1.json
+      eventHandlers:
+        - event: CheckpointAllowed(bool)
+          handler: handleCheckpointAllowed
+        - event: Claimed(indexed address,bool,uint256,uint256,uint256)
+          handler: handleClaimed
+        - event: Killed()
+          handler: handleKilled
+        - event: MaxIterationsUpdated(uint256,uint256)
+          handler: handleMaxIterationsUpdated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RecoveredERC20(address,uint256)
+          handler: handleRecoveredERC20
+        - event: RewardsCheckpointed(uint256)
+          handler: handleRewardsCheckpointed
+      file: ./src/RD_L1.ts

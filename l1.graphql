@@ -1,7 +1,11 @@
-type veSPAGlobalCheckpointEvent @entity {
+type veSPAUserCheckpointEvent @entity {
   id: ID!
-  caller: Bytes!
-  epoch: BigDecimal!
+  provider: Bytes!
+  depositedValue: BigDecimal!
+  autoCooldown: Boolean!
+  expiryUnix: BigInt!
+  expiry:String!
+  actionType: String!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -20,14 +24,10 @@ type veSPASupplyEvent @entity {
   blockNumber: BigInt!
   transactionHash: Bytes!
 }
-type veSPAUserCheckpointEvent @entity {
+type veSPAGlobalCheckpointEvent @entity {
   id: ID!
-  provider: Bytes!
-  depositedValue: BigDecimal!
-  autoCooldown: Boolean!
-  expiryUnix: BigInt!
-  expiry:String!
-  actionType: String!
+  caller: Bytes!
+  epoch: BigDecimal!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -35,11 +35,80 @@ type veSPAUserCheckpointEvent @entity {
   blockNumber: BigInt!
   transactionHash: Bytes!
 }
+
+
 type veSPAWithdrawEvent @entity {
   id: ID!
   provider: Bytes!
   withdrawTime: BigInt!
   withdrawnValue: BigDecimal!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+type veSPARewardClaimedEvent @entity {
+  id: ID!
+  recipient: Bytes!
+  lastRewardClaimTimeUnix: BigInt!
+  rewardClaimTillUnix: BigInt!
+  lastRewardClaimTime: String!
+  rewardClaimTill: String!
+  rewardAmount: BigDecimal!
+  staked:Boolean!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+type veSPARewardCheckpointAllowedEvent @entity {
+  id: ID!
+  allowed:Boolean!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+type veSPARewardCheckpointEvent @entity {
+  id: ID!
+  amount:BigDecimal!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+type veSPARewardMaxItterationUpdate @entity {
+  id: ID!
+  oldItteration:BigInt!
+  newItteration:BigInt!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+type veSPARecoverERC20Event @entity {
+  id: ID!
+  tokenAddress:Bytes!
+  amount:BigInt!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+type veSPARewardKilledEvent @entity {
+  id: ID!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
