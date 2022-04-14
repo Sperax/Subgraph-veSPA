@@ -1,14 +1,14 @@
 specVersion: 0.0.2
 schema:
-  file: l2.graphql
+  file: veSPA.graphql
 dataSources:
   - kind: ethereum
     name: veSPA
-    network: arbitrum-one
+    network: mainnet
     source:
-      address: "0x2e2071180682Ce6C247B1eF93d382D509F5F6A17"
+      address: "0xbF82a3212e13b2d407D10f5107b5C8404dE7F403"
       abi: veSPA
-      startBlock: 9349300
+      startBlock: 14527094
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -36,11 +36,11 @@ dataSources:
       file: veSPA/veSPA.wasm
   - kind: ethereum
     name: RewardDistributor_v1
-    network: arbitrum-one
+    network: mainnet
     source:
-      address: "0x2c07bc934974BbF413a4a4CeDA98713DCb8d9e16"
+      address: "0xa61DD4480BE2582283Afa54E461A1d3643b36040"
       abi: RewardDistributor_v1
-      startBlock: 9719072
+      startBlock: 14574618
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5

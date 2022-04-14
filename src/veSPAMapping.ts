@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
   veSPA,
   GlobalCheckpoint,
@@ -10,9 +10,12 @@ import {
 
 import {
   veSPAGlobalCheckpointEvent,
-  veSPASupplyEvent,
+  stakedSPASupplyEvent,
+  stakedSPASupplyDayEvent,
   veSPAUserCheckpointEvent,
   veSPAWithdrawEvent,
+  veSPASupplyEvent,
+  veSPASupplyDayEvent,
 } from "../generated/schema";
 import {
   timestampConvertDateTime,
@@ -42,15 +45,18 @@ export function handleGlobalCheckpoint(event: GlobalCheckpoint): void {
 }
 
 export function handleSupply(event: Supply): void {
-  let entity = new veSPASupplyEvent(
+  let entity = new stakedSPASupplyEvent(
     event.transaction.from
       .toHex()
       .concat("_")
       .concat(event.block.number.toHexString())
   );
+  let spaDateSupply = new stakedSPASupplyDayEvent(
+    timestampConvertDate(event.block.timestamp)
+  );
+  entity.previousSPASupply = digitsConvert(event.params.prevSupply);
+  entity.actualSPASupply = digitsConvert(event.params.supply);
 
-  entity.previousSupply = digitsConvert(event.params.prevSupply);
-  entity.actualSupply = digitsConvert(event.params.supply);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
@@ -58,6 +64,17 @@ export function handleSupply(event: Supply): void {
   entity.gasPrice = event.transaction.gasPrice;
   entity.gasUsed = event.block.gasUsed;
 
+  spaDateSupply.previousSPASupply = digitsConvert(event.params.prevSupply);
+  spaDateSupply.actualSPASupply = digitsConvert(event.params.supply);
+  
+  spaDateSupply.timeStamp = timestampConvertDateTime(event.block.timestamp);
+  spaDateSupply.timeStampUnix = event.block.timestamp;
+  spaDateSupply.blockNumber = event.block.number;
+  spaDateSupply.transactionHash = event.transaction.hash;
+  spaDateSupply.gasPrice = event.transaction.gasPrice;
+  spaDateSupply.gasUsed = event.block.gasUsed;
+  
+  spaDateSupply.save()
   entity.save();
 }
 
@@ -73,13 +90,42 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
           .concat(event.block.number.toHexString())
       )
   );
+  let vespaSupply = new veSPASupplyEvent(
+    event.transaction.from
+      .toHex()
+      .concat("_")
+      .concat(
+        event.params.actionType
+          .toString()
+          .concat("_")
+          .concat(event.block.number.toHexString())
+      )
+  );
+  let vespaDateSupply = new veSPASupplyDayEvent(
+    timestampConvertDate(event.block.timestamp)
+  );
 
+  let contract = veSPA.bind(event.address);
+  let getbalance = contract.try_balanceOf1(event.params.provider);
+  if (getbalance.reverted) {
+    log.debug("veSPA Balance reverted", []);
+  } else {
+    entity.veSPABalance = digitsConvert(getbalance.value);
+  }
+  let veSpa = contract.try_totalSupply();
+  if (veSpa.reverted) {
+    log.debug("veSPA Total Supply reverted", []);
+  } else {
+    vespaSupply.VeSPASupply = digitsConvert(veSpa.value);
+    vespaDateSupply.VeSPASupply = digitsConvert(veSpa.value);
+  }
   entity.actionType = actionTypeConverter(event.params.actionType);
   entity.autoCooldown = event.params.autoCooldown;
   entity.expiryUnix = event.params.locktime;
   entity.expiry = timestampConvertDateTime(event.params.locktime);
   entity.provider = event.params.provider;
   entity.depositedValue = digitsConvert(event.params.value);
+
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
@@ -87,6 +133,22 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
   entity.gasPrice = event.transaction.gasPrice;
   entity.gasUsed = event.block.gasUsed;
 
+  vespaSupply.timeStamp = timestampConvertDateTime(event.block.timestamp);
+  vespaSupply.timeStampUnix = event.block.timestamp;
+  vespaSupply.blockNumber = event.block.number;
+  vespaSupply.transactionHash = event.transaction.hash;
+  vespaSupply.gasPrice = event.transaction.gasPrice;
+  vespaSupply.gasUsed = event.block.gasUsed;
+
+  vespaDateSupply.timeStamp = timestampConvertDateTime(event.block.timestamp);
+  vespaDateSupply.timeStampUnix = event.block.timestamp;
+  vespaDateSupply.blockNumber = event.block.number;
+  vespaDateSupply.transactionHash = event.transaction.hash;
+  vespaDateSupply.gasPrice = event.transaction.gasPrice;
+  vespaDateSupply.gasUsed = event.block.gasUsed;
+
+  vespaDateSupply.save();
+  vespaSupply.save();
   entity.save();
 }
 

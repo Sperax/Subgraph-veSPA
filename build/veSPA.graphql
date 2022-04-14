@@ -6,6 +6,29 @@ type veSPAUserCheckpointEvent @entity {
   expiryUnix: BigInt!
   expiry:String!
   actionType: String!
+  veSPABalance:BigDecimal!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+type stakedSPASupplyEvent @entity {
+  id: ID!
+  previousSPASupply: BigDecimal!
+  actualSPASupply: BigDecimal!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+type stakedSPASupplyDayEvent @entity {
+  id: ID!
+  previousSPASupply: BigDecimal!
+  actualSPASupply: BigDecimal!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -15,8 +38,19 @@ type veSPAUserCheckpointEvent @entity {
 }
 type veSPASupplyEvent @entity {
   id: ID!
-  previousSupply: BigDecimal!
-  actualSupply: BigDecimal!
+ 
+  VeSPASupply: BigDecimal!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+type veSPASupplyDayEvent @entity {
+  id: ID!
+ 
+  VeSPASupply: BigDecimal!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!

@@ -22,6 +22,7 @@ export class veSPAUserCheckpointEvent extends Entity {
     this.set("expiryUnix", Value.fromBigInt(BigInt.zero()));
     this.set("expiry", Value.fromString(""));
     this.set("actionType", Value.fromString(""));
+    this.set("veSPABalance", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
     this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
     this.set("timeStamp", Value.fromString(""));
@@ -115,6 +116,250 @@ export class veSPAUserCheckpointEvent extends Entity {
     this.set("actionType", Value.fromString(value));
   }
 
+  get veSPABalance(): BigDecimal {
+    let value = this.get("veSPABalance");
+    return value!.toBigDecimal();
+  }
+
+  set veSPABalance(value: BigDecimal) {
+    this.set("veSPABalance", Value.fromBigDecimal(value));
+  }
+
+  get gasPrice(): BigInt {
+    let value = this.get("gasPrice");
+    return value!.toBigInt();
+  }
+
+  set gasPrice(value: BigInt) {
+    this.set("gasPrice", Value.fromBigInt(value));
+  }
+
+  get gasUsed(): BigInt {
+    let value = this.get("gasUsed");
+    return value!.toBigInt();
+  }
+
+  set gasUsed(value: BigInt) {
+    this.set("gasUsed", Value.fromBigInt(value));
+  }
+
+  get timeStamp(): string {
+    let value = this.get("timeStamp");
+    return value!.toString();
+  }
+
+  set timeStamp(value: string) {
+    this.set("timeStamp", Value.fromString(value));
+  }
+
+  get timeStampUnix(): BigInt {
+    let value = this.get("timeStampUnix");
+    return value!.toBigInt();
+  }
+
+  set timeStampUnix(value: BigInt) {
+    this.set("timeStampUnix", Value.fromBigInt(value));
+  }
+
+  get blockNumber(): BigInt {
+    let value = this.get("blockNumber");
+    return value!.toBigInt();
+  }
+
+  set blockNumber(value: BigInt) {
+    this.set("blockNumber", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    return value!.toBytes();
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class stakedSPASupplyEvent extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("previousSPASupply", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("actualSPASupply", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
+    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
+    this.set("timeStamp", Value.fromString(""));
+    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
+    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
+    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save stakedSPASupplyEvent entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save stakedSPASupplyEvent entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("stakedSPASupplyEvent", id.toString(), this);
+    }
+  }
+
+  static load(id: string): stakedSPASupplyEvent | null {
+    return changetype<stakedSPASupplyEvent | null>(
+      store.get("stakedSPASupplyEvent", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get previousSPASupply(): BigDecimal {
+    let value = this.get("previousSPASupply");
+    return value!.toBigDecimal();
+  }
+
+  set previousSPASupply(value: BigDecimal) {
+    this.set("previousSPASupply", Value.fromBigDecimal(value));
+  }
+
+  get actualSPASupply(): BigDecimal {
+    let value = this.get("actualSPASupply");
+    return value!.toBigDecimal();
+  }
+
+  set actualSPASupply(value: BigDecimal) {
+    this.set("actualSPASupply", Value.fromBigDecimal(value));
+  }
+
+  get gasPrice(): BigInt {
+    let value = this.get("gasPrice");
+    return value!.toBigInt();
+  }
+
+  set gasPrice(value: BigInt) {
+    this.set("gasPrice", Value.fromBigInt(value));
+  }
+
+  get gasUsed(): BigInt {
+    let value = this.get("gasUsed");
+    return value!.toBigInt();
+  }
+
+  set gasUsed(value: BigInt) {
+    this.set("gasUsed", Value.fromBigInt(value));
+  }
+
+  get timeStamp(): string {
+    let value = this.get("timeStamp");
+    return value!.toString();
+  }
+
+  set timeStamp(value: string) {
+    this.set("timeStamp", Value.fromString(value));
+  }
+
+  get timeStampUnix(): BigInt {
+    let value = this.get("timeStampUnix");
+    return value!.toBigInt();
+  }
+
+  set timeStampUnix(value: BigInt) {
+    this.set("timeStampUnix", Value.fromBigInt(value));
+  }
+
+  get blockNumber(): BigInt {
+    let value = this.get("blockNumber");
+    return value!.toBigInt();
+  }
+
+  set blockNumber(value: BigInt) {
+    this.set("blockNumber", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    return value!.toBytes();
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class stakedSPASupplyDayEvent extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("previousSPASupply", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("actualSPASupply", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
+    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
+    this.set("timeStamp", Value.fromString(""));
+    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
+    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
+    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save stakedSPASupplyDayEvent entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save stakedSPASupplyDayEvent entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("stakedSPASupplyDayEvent", id.toString(), this);
+    }
+  }
+
+  static load(id: string): stakedSPASupplyDayEvent | null {
+    return changetype<stakedSPASupplyDayEvent | null>(
+      store.get("stakedSPASupplyDayEvent", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get previousSPASupply(): BigDecimal {
+    let value = this.get("previousSPASupply");
+    return value!.toBigDecimal();
+  }
+
+  set previousSPASupply(value: BigDecimal) {
+    this.set("previousSPASupply", Value.fromBigDecimal(value));
+  }
+
+  get actualSPASupply(): BigDecimal {
+    let value = this.get("actualSPASupply");
+    return value!.toBigDecimal();
+  }
+
+  set actualSPASupply(value: BigDecimal) {
+    this.set("actualSPASupply", Value.fromBigDecimal(value));
+  }
+
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
     return value!.toBigInt();
@@ -175,8 +420,7 @@ export class veSPASupplyEvent extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("previousSupply", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("actualSupply", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("VeSPASupply", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
     this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
     this.set("timeStamp", Value.fromString(""));
@@ -213,22 +457,119 @@ export class veSPASupplyEvent extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get previousSupply(): BigDecimal {
-    let value = this.get("previousSupply");
+  get VeSPASupply(): BigDecimal {
+    let value = this.get("VeSPASupply");
     return value!.toBigDecimal();
   }
 
-  set previousSupply(value: BigDecimal) {
-    this.set("previousSupply", Value.fromBigDecimal(value));
+  set VeSPASupply(value: BigDecimal) {
+    this.set("VeSPASupply", Value.fromBigDecimal(value));
   }
 
-  get actualSupply(): BigDecimal {
-    let value = this.get("actualSupply");
+  get gasPrice(): BigInt {
+    let value = this.get("gasPrice");
+    return value!.toBigInt();
+  }
+
+  set gasPrice(value: BigInt) {
+    this.set("gasPrice", Value.fromBigInt(value));
+  }
+
+  get gasUsed(): BigInt {
+    let value = this.get("gasUsed");
+    return value!.toBigInt();
+  }
+
+  set gasUsed(value: BigInt) {
+    this.set("gasUsed", Value.fromBigInt(value));
+  }
+
+  get timeStamp(): string {
+    let value = this.get("timeStamp");
+    return value!.toString();
+  }
+
+  set timeStamp(value: string) {
+    this.set("timeStamp", Value.fromString(value));
+  }
+
+  get timeStampUnix(): BigInt {
+    let value = this.get("timeStampUnix");
+    return value!.toBigInt();
+  }
+
+  set timeStampUnix(value: BigInt) {
+    this.set("timeStampUnix", Value.fromBigInt(value));
+  }
+
+  get blockNumber(): BigInt {
+    let value = this.get("blockNumber");
+    return value!.toBigInt();
+  }
+
+  set blockNumber(value: BigInt) {
+    this.set("blockNumber", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    return value!.toBytes();
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class veSPASupplyDayEvent extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("VeSPASupply", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
+    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
+    this.set("timeStamp", Value.fromString(""));
+    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
+    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
+    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save veSPASupplyDayEvent entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save veSPASupplyDayEvent entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("veSPASupplyDayEvent", id.toString(), this);
+    }
+  }
+
+  static load(id: string): veSPASupplyDayEvent | null {
+    return changetype<veSPASupplyDayEvent | null>(
+      store.get("veSPASupplyDayEvent", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get VeSPASupply(): BigDecimal {
+    let value = this.get("VeSPASupply");
     return value!.toBigDecimal();
   }
 
-  set actualSupply(value: BigDecimal) {
-    this.set("actualSupply", Value.fromBigDecimal(value));
+  set VeSPASupply(value: BigDecimal) {
+    this.set("VeSPASupply", Value.fromBigDecimal(value));
   }
 
   get gasPrice(): BigInt {
