@@ -235,7 +235,8 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       );
       increaseLockTime.autoCooldown = event.params.autoCooldown;
       increaseLockTime.provider = event.params.provider;
-
+      entity.expiryUnix = event.params.locktime;
+      entity.expiry = timestampConvertDateTime(event.params.locktime);
       increaseLockTime.timeStamp = timestampConvertDateTime(
         event.block.timestamp
       );
@@ -264,7 +265,7 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       } else {
         initiateCooldown.veSPABalance = digitsConvert(getbalance4.value);
       }
-  
+
       initiateCooldown.actionType = actionTypeConverter(
         event.params.actionType
       );
