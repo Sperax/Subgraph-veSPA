@@ -14,6 +14,86 @@ type veSPAUserCheckpointEvent @entity {
   blockNumber: BigInt!
   transactionHash: Bytes!
 }
+
+type veSPACreateLockEvent @entity {
+  id: ID!
+  provider: Bytes!
+  depositedValue: BigDecimal!
+  autoCooldown: Boolean!
+  expiryUnix: BigInt!
+  expiry:String!
+  actionType: String!
+  veSPABalance:BigDecimal!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+type veSPAIncreaseAmountEvent @entity {
+  id: ID!
+  provider: Bytes!
+  depositedValue: BigDecimal!
+  autoCooldown: Boolean!
+  actionType: String!
+  veSPABalance:BigDecimal!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+type veSPAIncreaseLockTimeEvent @entity {
+  id: ID!
+  provider: Bytes!
+  autoCooldown: Boolean!
+  expiryUnix: BigInt!
+  expiry:String!
+  actionType: String!
+  veSPABalance:BigDecimal!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+type veSPAInitiateCooldownEvent @entity {
+  id: ID!
+  provider: Bytes!
+  depositedValue: BigDecimal!
+  autoCooldown: Boolean!
+  expiryUnix: BigInt!
+  expiry:String!
+  actionType: String!
+  veSPABalance:BigDecimal!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+type veSPADepositForEvent @entity {
+  id: ID!
+  provider: Bytes!
+  depositedValue: BigDecimal!
+  autoCooldown: Boolean!
+  actionType: String!
+  veSPABalance:BigDecimal!
+  gasPrice: BigInt!
+  gasUsed: BigInt!
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
 type stakedSPASupplyEvent @entity {
   id: ID!
   previousSPASupply: BigDecimal!
@@ -38,7 +118,6 @@ type stakedSPASupplyDayEvent @entity {
 }
 type veSPASupplyEvent @entity {
   id: ID!
- 
   VeSPASupply: BigDecimal!
   gasPrice: BigInt!
   gasUsed: BigInt!

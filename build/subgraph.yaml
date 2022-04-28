@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: veSPA
-    network: mainnet
+    network: arbitrum-one
     source:
-      address: "0xbF82a3212e13b2d407D10f5107b5C8404dE7F403"
+      address: "0x2e2071180682Ce6C247B1eF93d382D509F5F6A17"
       abi: veSPA
-      startBlock: 14527094
+      startBlock: 9349300
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -36,11 +36,11 @@ dataSources:
       file: veSPA/veSPA.wasm
   - kind: ethereum
     name: RewardDistributor_v1
-    network: mainnet
+    network: arbitrum-one
     source:
-      address: "0xa61DD4480BE2582283Afa54E461A1d3643b36040"
+      address: "0x2c07bc934974BbF413a4a4CeDA98713DCb8d9e16"
       abi: RewardDistributor_v1
-      startBlock: 14574618
+      startBlock: 9719072
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5

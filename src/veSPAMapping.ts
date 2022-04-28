@@ -1,4 +1,4 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { bigInt, BigInt, log } from "@graphprotocol/graph-ts";
 import {
   veSPA,
   GlobalCheckpoint,
@@ -16,6 +16,11 @@ import {
   veSPAWithdrawEvent,
   veSPASupplyEvent,
   veSPASupplyDayEvent,
+  veSPADepositForEvent,
+  veSPACreateLockEvent,
+  veSPAIncreaseAmountEvent,
+  veSPAIncreaseLockTimeEvent,
+  veSPAInitiateCooldownEvent,
 } from "../generated/schema";
 import {
   timestampConvertDateTime,
@@ -66,15 +71,15 @@ export function handleSupply(event: Supply): void {
 
   spaDateSupply.previousSPASupply = digitsConvert(event.params.prevSupply);
   spaDateSupply.actualSPASupply = digitsConvert(event.params.supply);
-  
+
   spaDateSupply.timeStamp = timestampConvertDateTime(event.block.timestamp);
   spaDateSupply.timeStampUnix = event.block.timestamp;
   spaDateSupply.blockNumber = event.block.number;
   spaDateSupply.transactionHash = event.transaction.hash;
   spaDateSupply.gasPrice = event.transaction.gasPrice;
   spaDateSupply.gasUsed = event.block.gasUsed;
-  
-  spaDateSupply.save()
+
+  spaDateSupply.save();
   entity.save();
 }
 
@@ -106,7 +111,185 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
   );
 
   let contract = veSPA.bind(event.address);
-  let getbalance = contract.try_balanceOf1(event.params.provider);
+
+  switch (event.params.actionType) {
+    case 0:
+      let depositFor = new veSPADepositForEvent(
+        event.transaction.from
+          .toHex()
+          .concat("_")
+          .concat(
+            event.params.actionType
+              .toString()
+              .concat("_")
+              .concat(event.block.number.toHexString())
+          )
+      );
+
+      let getbalance = contract.try_balanceOf1(event.params.provider);
+      if (getbalance.reverted) {
+        log.debug("veSPA Balance reverted", []);
+      } else {
+        depositFor.veSPABalance = digitsConvert(getbalance.value);
+      }
+
+      depositFor.actionType = actionTypeConverter(event.params.actionType);
+      depositFor.autoCooldown = event.params.autoCooldown;
+      depositFor.provider = event.params.provider;
+      depositFor.depositedValue = digitsConvert(event.params.value);
+
+      depositFor.timeStamp = timestampConvertDateTime(event.block.timestamp);
+      depositFor.timeStampUnix = event.block.timestamp;
+      depositFor.blockNumber = event.block.number;
+      depositFor.transactionHash = event.transaction.hash;
+      depositFor.gasPrice = event.transaction.gasPrice;
+      depositFor.gasUsed = event.block.gasUsed;
+      depositFor.save();
+      break;
+    case 1:
+      let createLock = new veSPACreateLockEvent(
+        event.transaction.from
+          .toHex()
+          .concat("_")
+          .concat(
+            event.params.actionType
+              .toString()
+              .concat("_")
+              .concat(event.block.number.toHexString())
+          )
+      );
+      let getbalance1 = contract.try_balanceOf1(event.params.provider);
+      if (getbalance1.reverted) {
+        log.debug("veSPA Balance reverted", []);
+      } else {
+        createLock.veSPABalance = digitsConvert(getbalance1.value);
+      }
+      createLock.actionType = actionTypeConverter(event.params.actionType);
+      createLock.autoCooldown = event.params.autoCooldown;
+      createLock.expiryUnix = event.params.locktime;
+      createLock.expiry = timestampConvertDateTime(event.params.locktime);
+      createLock.provider = event.params.provider;
+      createLock.depositedValue = digitsConvert(event.params.value);
+
+      createLock.timeStamp = timestampConvertDateTime(event.block.timestamp);
+      createLock.timeStampUnix = event.block.timestamp;
+      createLock.blockNumber = event.block.number;
+      createLock.transactionHash = event.transaction.hash;
+      createLock.gasPrice = event.transaction.gasPrice;
+      createLock.gasUsed = event.block.gasUsed;
+      createLock.save();
+      break;
+    case 2:
+      let increaseAmount = new veSPAIncreaseAmountEvent(
+        event.transaction.from
+          .toHex()
+          .concat("_")
+          .concat(
+            event.params.actionType
+              .toString()
+              .concat("_")
+              .concat(event.block.number.toHexString())
+          )
+      );
+      let getbalance2 = contract.try_balanceOf1(event.params.provider);
+      if (getbalance2.reverted) {
+        log.debug("veSPA Balance reverted", []);
+      } else {
+        increaseAmount.veSPABalance = digitsConvert(getbalance2.value);
+      }
+      increaseAmount.actionType = actionTypeConverter(event.params.actionType);
+      increaseAmount.autoCooldown = event.params.autoCooldown;
+      increaseAmount.provider = event.params.provider;
+      increaseAmount.depositedValue = digitsConvert(event.params.value);
+
+      increaseAmount.timeStamp = timestampConvertDateTime(
+        event.block.timestamp
+      );
+      increaseAmount.timeStampUnix = event.block.timestamp;
+      increaseAmount.blockNumber = event.block.number;
+      increaseAmount.transactionHash = event.transaction.hash;
+      increaseAmount.gasPrice = event.transaction.gasPrice;
+      increaseAmount.gasUsed = event.block.gasUsed;
+      increaseAmount.save();
+      break;
+    case 3:
+      let increaseLockTime = new veSPAIncreaseLockTimeEvent(
+        event.transaction.from
+          .toHex()
+          .concat("_")
+          .concat(
+            event.params.actionType
+              .toString()
+              .concat("_")
+              .concat(event.block.number.toHexString())
+          )
+      );
+      let getbalance3 = contract.try_balanceOf1(event.params.provider);
+      if (getbalance3.reverted) {
+        log.debug("veSPA Balance reverted", []);
+      } else {
+        increaseLockTime.veSPABalance = digitsConvert(getbalance3.value);
+      }
+      increaseLockTime.actionType = actionTypeConverter(
+        event.params.actionType
+      );
+      increaseLockTime.autoCooldown = event.params.autoCooldown;
+      increaseLockTime.provider = event.params.provider;
+
+      increaseLockTime.timeStamp = timestampConvertDateTime(
+        event.block.timestamp
+      );
+      increaseLockTime.timeStampUnix = event.block.timestamp;
+      increaseLockTime.blockNumber = event.block.number;
+      increaseLockTime.transactionHash = event.transaction.hash;
+      increaseLockTime.gasPrice = event.transaction.gasPrice;
+      increaseLockTime.gasUsed = event.block.gasUsed;
+      increaseLockTime.save();
+      break;
+    case 4:
+      let initiateCooldown = new veSPAInitiateCooldownEvent(
+        event.transaction.from
+          .toHex()
+          .concat("_")
+          .concat(
+            event.params.actionType
+              .toString()
+              .concat("_")
+              .concat(event.block.number.toHexString())
+          )
+      );
+      let getbalance4 = contract.try_balanceOf1(event.params.provider);
+      if (getbalance4.reverted) {
+        log.debug("veSPA Balance reverted", []);
+      } else {
+        initiateCooldown.veSPABalance = digitsConvert(getbalance4.value);
+      }
+  
+      initiateCooldown.actionType = actionTypeConverter(
+        event.params.actionType
+      );
+      initiateCooldown.autoCooldown = event.params.autoCooldown;
+      initiateCooldown.expiryUnix = event.params.locktime;
+      initiateCooldown.expiry = timestampConvertDateTime(event.params.locktime);
+      initiateCooldown.provider = event.params.provider;
+      initiateCooldown.depositedValue = digitsConvert(event.params.value);
+
+      initiateCooldown.timeStamp = timestampConvertDateTime(
+        event.block.timestamp
+      );
+      initiateCooldown.timeStampUnix = event.block.timestamp;
+      initiateCooldown.blockNumber = event.block.number;
+      initiateCooldown.transactionHash = event.transaction.hash;
+      initiateCooldown.gasPrice = event.transaction.gasPrice;
+      initiateCooldown.gasUsed = event.block.gasUsed;
+      initiateCooldown.save();
+      break;
+  }
+
+  let getbalance = contract.try_balanceOf(
+    event.params.provider,
+    BigInt.fromI64(1650495600)
+  );
   if (getbalance.reverted) {
     log.debug("veSPA Balance reverted", []);
   } else {
