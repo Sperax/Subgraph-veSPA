@@ -235,8 +235,8 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       );
       increaseLockTime.autoCooldown = event.params.autoCooldown;
       increaseLockTime.provider = event.params.provider;
-      entity.expiryUnix = event.params.locktime;
-      entity.expiry = timestampConvertDateTime(event.params.locktime);
+      increaseLockTime.expiryUnix = event.params.locktime;
+      increaseLockTime.expiry = timestampConvertDateTime(event.params.locktime);
       increaseLockTime.timeStamp = timestampConvertDateTime(
         event.block.timestamp
       );
