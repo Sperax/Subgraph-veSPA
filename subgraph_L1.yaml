@@ -73,3 +73,41 @@ dataSources:
         - event: RewardsCheckpointed(uint256)
           handler: handleRewardsCheckpointed
       file: ./src/RD.ts
+  - kind: ethereum
+    name: rewardDistributorV2
+    network: mainnet
+    source:
+      address: "0x080F26e2Fcdb2398BF289378892b5b330C3411Db"
+      abi: rewardDistributorV2
+      startBlock: 15539462
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - CheckpointAllowed
+        - Claimed
+        - Killed
+        - MaxIterationsUpdated
+        - OwnershipTransferred
+        - RecoveredERC20
+        - RewardsCheckpointed
+      abis:
+        - name: rewardDistributorV2
+          file: ./abis/rewardDistributorV2.json
+      eventHandlers:
+        - event: CheckpointAllowed(bool)
+          handler: handleCheckpointAllowedV2
+        - event: Claimed(indexed address,bool,uint256,uint256,uint256)
+          handler: handleClaimedV2
+        - event: Killed()
+          handler: handleKilledV2
+        - event: MaxIterationsUpdated(uint256,uint256)
+          handler: handleMaxIterationsUpdatedV2
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferredV2
+        - event: RecoveredERC20(address,uint256)
+          handler: handleRecoveredERC20V2
+        - event: RewardsCheckpointed(uint256)
+          handler: handleRewardsCheckpointedV2
+      file: ./src/RD_V2.ts

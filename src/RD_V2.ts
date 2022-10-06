@@ -1,6 +1,6 @@
 import { bigInt, BigInt } from "@graphprotocol/graph-ts";
 import {
-  RewardDistributor_v1,
+  rewardDistributorV2,
   CheckpointAllowed,
   Claimed,
   Killed,
@@ -8,7 +8,7 @@ import {
   OwnershipTransferred,
   RecoveredERC20,
   RewardsCheckpointed,
-} from "../generated/RewardDistributor_v1/RewardDistributor_v1";
+} from "../generated/rewardDistributorV2/rewardDistributorV2";
 import {
   timestampConvertDateTime,
   digitsConvert,
@@ -24,7 +24,7 @@ import {
   veSPARecoverERC20Event,
 } from "../generated/schema";
 
-export function handleClaimed(event: Claimed): void {
+export function handleClaimedV2(event: Claimed): void {
   let entity = new veSPARewardClaimedEvent(
     event.transaction.from
       .toHex()
@@ -54,7 +54,7 @@ export function handleClaimed(event: Claimed): void {
   entity.save();
 }
 
-export function handleCheckpointAllowed(event: CheckpointAllowed): void {
+export function handleCheckpointAllowedV2(event: CheckpointAllowed): void {
   let entity = new veSPARewardCheckpointAllowedEvent(
     event.transaction.from
       .toHex()
@@ -73,7 +73,7 @@ export function handleCheckpointAllowed(event: CheckpointAllowed): void {
   entity.save();
 }
 
-export function handleKilled(event: Killed): void {
+export function handleKilledV2(event: Killed): void {
   let entity = new veSPARewardKilledEvent(
     event.transaction.from
       .toHex()
@@ -89,7 +89,7 @@ export function handleKilled(event: Killed): void {
 
   entity.save();
 }
-export function handleRewardsCheckpointed(event: RewardsCheckpointed): void {
+export function handleRewardsCheckpointedV2(event: RewardsCheckpointed): void {
   let entity = new veSPARewardCheckpointEvent(
     event.transaction.from
       .toHex()
@@ -104,13 +104,14 @@ export function handleRewardsCheckpointed(event: RewardsCheckpointed): void {
   entity.transactionHash = event.transaction.hash;
   entity.gasPrice = event.transaction.gasPrice;
   entity.gasUsed = event.block.gasUsed;
-  if (event.params._amount > BigInt.fromI32(0))
-  {
-  entity.save();
+  if (event.params._amount > BigInt.fromI32(0)) {
+    entity.save();
   }
 }
 
-export function handleMaxIterationsUpdated(event: MaxIterationsUpdated): void {
+export function handleMaxIterationsUpdatedV2(
+  event: MaxIterationsUpdated
+): void {
   let entity = new veSPARewardMaxItterationUpdate(
     event.transaction.from
       .toHex()
@@ -131,7 +132,7 @@ export function handleMaxIterationsUpdated(event: MaxIterationsUpdated): void {
   entity.save();
 }
 
-export function handleRecoveredERC20(event: RecoveredERC20): void {
+export function handleRecoveredERC20V2(event: RecoveredERC20): void {
   let entity = new veSPARecoverERC20Event(
     event.transaction.from
       .toHex()
@@ -151,7 +152,9 @@ export function handleRecoveredERC20(event: RecoveredERC20): void {
   entity.save();
 }
 
-export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
+export function handleOwnershipTransferredV2(
+  event: OwnershipTransferred
+): void {}
 
 // Note: If a handler doesn't require existing field values, it is faster
 // _not_ to load the entity from the store. Instead, create it fresh with
