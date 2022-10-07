@@ -4,9 +4,9 @@ type veSPAUserCheckpointEvent @entity {
   depositedValue: BigDecimal!
   autoCooldown: Boolean!
   expiryUnix: BigInt!
-  expiry:String!
+  expiry: String!
   actionType: String!
-  veSPABalance:BigDecimal!
+  veSPABalance: BigDecimal!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -21,9 +21,9 @@ type veSPACreateLockEvent @entity {
   depositedValue: BigDecimal!
   autoCooldown: Boolean!
   expiryUnix: BigInt!
-  expiry:String!
+  expiry: String!
   actionType: String!
-  veSPABalance:BigDecimal!
+  veSPABalance: BigDecimal!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -38,7 +38,7 @@ type veSPAIncreaseAmountEvent @entity {
   depositedValue: BigDecimal!
   autoCooldown: Boolean!
   actionType: String!
-  veSPABalance:BigDecimal!
+  veSPABalance: BigDecimal!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -52,9 +52,9 @@ type veSPAIncreaseLockTimeEvent @entity {
   provider: Bytes!
   autoCooldown: Boolean!
   expiryUnix: BigInt!
-  expiry:String!
+  expiry: String!
   actionType: String!
-  veSPABalance:BigDecimal!
+  veSPABalance: BigDecimal!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -69,9 +69,9 @@ type veSPAInitiateCooldownEvent @entity {
   depositedValue: BigDecimal!
   autoCooldown: Boolean!
   expiryUnix: BigInt!
-  expiry:String!
+  expiry: String!
   actionType: String!
-  veSPABalance:BigDecimal!
+  veSPABalance: BigDecimal!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -85,7 +85,7 @@ type veSPADepositForEvent @entity {
   depositedValue: BigDecimal!
   autoCooldown: Boolean!
   actionType: String!
-  veSPABalance:BigDecimal!
+  veSPABalance: BigDecimal!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -128,7 +128,7 @@ type veSPASupplyEvent @entity {
 }
 type veSPASupplyDayEvent @entity {
   id: ID!
- 
+
   VeSPASupply: BigDecimal!
   gasPrice: BigInt!
   gasUsed: BigInt!
@@ -148,7 +148,6 @@ type veSPAGlobalCheckpointEvent @entity {
   blockNumber: BigInt!
   transactionHash: Bytes!
 }
-
 
 type veSPAWithdrawEvent @entity {
   id: ID!
@@ -170,7 +169,8 @@ type veSPARewardClaimedEvent @entity {
   lastRewardClaimTime: String!
   rewardClaimTill: String!
   rewardAmount: BigDecimal!
-  staked:Boolean!
+  staked: Boolean!
+  version: BigInt!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -180,7 +180,8 @@ type veSPARewardClaimedEvent @entity {
 }
 type veSPARewardCheckpointAllowedEvent @entity {
   id: ID!
-  allowed:Boolean!
+  allowed: Boolean!
+  version: BigInt!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -190,7 +191,8 @@ type veSPARewardCheckpointAllowedEvent @entity {
 }
 type veSPARewardCheckpointEvent @entity {
   id: ID!
-  amount:BigDecimal!
+  amount: BigDecimal!
+  version: BigInt!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -200,8 +202,9 @@ type veSPARewardCheckpointEvent @entity {
 }
 type veSPARewardMaxItterationUpdate @entity {
   id: ID!
-  oldItteration:BigInt!
-  newItteration:BigInt!
+  oldItteration: BigInt!
+  newItteration: BigInt!
+  version: BigInt!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -211,8 +214,9 @@ type veSPARewardMaxItterationUpdate @entity {
 }
 type veSPARecoverERC20Event @entity {
   id: ID!
-  tokenAddress:Bytes!
-  amount:BigInt!
+  tokenAddress: Bytes!
+  amount: BigInt!
+  version: BigInt!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -222,6 +226,7 @@ type veSPARecoverERC20Event @entity {
 }
 type veSPARewardKilledEvent @entity {
   id: ID!
+  version: BigInt!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!

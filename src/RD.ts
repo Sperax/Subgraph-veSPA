@@ -43,7 +43,7 @@ export function handleClaimed(event: Claimed): void {
   );
   entity.lastRewardClaimTimeUnix = event.params._lastRewardClaimTime;
   entity.rewardClaimTillUnix = event.params._rewardClaimedTill;
-
+  entity.version = BigInt.fromI32(1);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
@@ -63,6 +63,7 @@ export function handleCheckpointAllowed(event: CheckpointAllowed): void {
   );
 
   entity.allowed = event.params._allowed;
+  entity.version = BigInt.fromI32(1);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
@@ -80,6 +81,7 @@ export function handleKilled(event: Killed): void {
       .concat("_")
       .concat(event.block.number.toHexString())
   );
+  entity.version = BigInt.fromI32(1);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
@@ -97,16 +99,15 @@ export function handleRewardsCheckpointed(event: RewardsCheckpointed): void {
       .concat(event.block.number.toHexString())
   );
   entity.amount = digitsConvert(event.params._amount);
-
+  entity.version = BigInt.fromI32(1);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
   entity.transactionHash = event.transaction.hash;
   entity.gasPrice = event.transaction.gasPrice;
   entity.gasUsed = event.block.gasUsed;
-  if (event.params._amount > BigInt.fromI32(0))
-  {
-  entity.save();
+  if (event.params._amount > BigInt.fromI32(0)) {
+    entity.save();
   }
 }
 
@@ -120,7 +121,7 @@ export function handleMaxIterationsUpdated(event: MaxIterationsUpdated): void {
 
   entity.oldItteration = event.params._oldNo;
   entity.newItteration = event.params._newNo;
-
+  entity.version = BigInt.fromI32(1);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
@@ -140,7 +141,7 @@ export function handleRecoveredERC20(event: RecoveredERC20): void {
   );
   entity.tokenAddress = event.params._token;
   entity.amount = event.params._amount;
-
+  entity.version = BigInt.fromI32(1);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;

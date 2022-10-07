@@ -1673,6 +1673,7 @@ export class veSPARewardClaimedEvent extends Entity {
     this.set("rewardClaimTill", Value.fromString(""));
     this.set("rewardAmount", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("staked", Value.fromBoolean(false));
+    this.set("version", Value.fromBigInt(BigInt.zero()));
     this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
     this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
     this.set("timeStamp", Value.fromString(""));
@@ -1775,6 +1776,15 @@ export class veSPARewardClaimedEvent extends Entity {
     this.set("staked", Value.fromBoolean(value));
   }
 
+  get version(): BigInt {
+    let value = this.get("version");
+    return value!.toBigInt();
+  }
+
+  set version(value: BigInt) {
+    this.set("version", Value.fromBigInt(value));
+  }
+
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
     return value!.toBigInt();
@@ -1836,6 +1846,7 @@ export class veSPARewardCheckpointAllowedEvent extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("allowed", Value.fromBoolean(false));
+    this.set("version", Value.fromBigInt(BigInt.zero()));
     this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
     this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
     this.set("timeStamp", Value.fromString(""));
@@ -1882,6 +1893,15 @@ export class veSPARewardCheckpointAllowedEvent extends Entity {
 
   set allowed(value: boolean) {
     this.set("allowed", Value.fromBoolean(value));
+  }
+
+  get version(): BigInt {
+    let value = this.get("version");
+    return value!.toBigInt();
+  }
+
+  set version(value: BigInt) {
+    this.set("version", Value.fromBigInt(value));
   }
 
   get gasPrice(): BigInt {
@@ -1945,6 +1965,7 @@ export class veSPARewardCheckpointEvent extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("version", Value.fromBigInt(BigInt.zero()));
     this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
     this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
     this.set("timeStamp", Value.fromString(""));
@@ -1991,6 +2012,15 @@ export class veSPARewardCheckpointEvent extends Entity {
 
   set amount(value: BigDecimal) {
     this.set("amount", Value.fromBigDecimal(value));
+  }
+
+  get version(): BigInt {
+    let value = this.get("version");
+    return value!.toBigInt();
+  }
+
+  set version(value: BigInt) {
+    this.set("version", Value.fromBigInt(value));
   }
 
   get gasPrice(): BigInt {
@@ -2055,6 +2085,7 @@ export class veSPARewardMaxItterationUpdate extends Entity {
 
     this.set("oldItteration", Value.fromBigInt(BigInt.zero()));
     this.set("newItteration", Value.fromBigInt(BigInt.zero()));
+    this.set("version", Value.fromBigInt(BigInt.zero()));
     this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
     this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
     this.set("timeStamp", Value.fromString(""));
@@ -2110,6 +2141,15 @@ export class veSPARewardMaxItterationUpdate extends Entity {
 
   set newItteration(value: BigInt) {
     this.set("newItteration", Value.fromBigInt(value));
+  }
+
+  get version(): BigInt {
+    let value = this.get("version");
+    return value!.toBigInt();
+  }
+
+  set version(value: BigInt) {
+    this.set("version", Value.fromBigInt(value));
   }
 
   get gasPrice(): BigInt {
@@ -2174,6 +2214,7 @@ export class veSPARecoverERC20Event extends Entity {
 
     this.set("tokenAddress", Value.fromBytes(Bytes.empty()));
     this.set("amount", Value.fromBigInt(BigInt.zero()));
+    this.set("version", Value.fromBigInt(BigInt.zero()));
     this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
     this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
     this.set("timeStamp", Value.fromString(""));
@@ -2229,6 +2270,15 @@ export class veSPARecoverERC20Event extends Entity {
 
   set amount(value: BigInt) {
     this.set("amount", Value.fromBigInt(value));
+  }
+
+  get version(): BigInt {
+    let value = this.get("version");
+    return value!.toBigInt();
+  }
+
+  set version(value: BigInt) {
+    this.set("version", Value.fromBigInt(value));
   }
 
   get gasPrice(): BigInt {
@@ -2291,6 +2341,7 @@ export class veSPARewardKilledEvent extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("version", Value.fromBigInt(BigInt.zero()));
     this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
     this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
     this.set("timeStamp", Value.fromString(""));
@@ -2328,6 +2379,15 @@ export class veSPARewardKilledEvent extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get version(): BigInt {
+    let value = this.get("version");
+    return value!.toBigInt();
+  }
+
+  set version(value: BigInt) {
+    this.set("version", Value.fromBigInt(value));
   }
 
   get gasPrice(): BigInt {

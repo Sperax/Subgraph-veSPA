@@ -42,8 +42,8 @@ export function handleClaimedV2(event: Claimed): void {
     event.params._rewardClaimedTill
   );
   entity.lastRewardClaimTimeUnix = event.params._lastRewardClaimTime;
+  entity.version = BigInt.fromI32(2);
   entity.rewardClaimTillUnix = event.params._rewardClaimedTill;
-
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
@@ -61,7 +61,7 @@ export function handleCheckpointAllowedV2(event: CheckpointAllowed): void {
       .concat("_")
       .concat(event.block.number.toHexString())
   );
-
+  entity.version = BigInt.fromI32(2);
   entity.allowed = event.params._allowed;
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
@@ -80,6 +80,7 @@ export function handleKilledV2(event: Killed): void {
       .concat("_")
       .concat(event.block.number.toHexString())
   );
+  entity.version = BigInt.fromI32(2);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
@@ -97,7 +98,7 @@ export function handleRewardsCheckpointedV2(event: RewardsCheckpointed): void {
       .concat(event.block.number.toHexString())
   );
   entity.amount = digitsConvert(event.params._amount);
-
+  entity.version = BigInt.fromI32(2);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
@@ -121,7 +122,7 @@ export function handleMaxIterationsUpdatedV2(
 
   entity.oldItteration = event.params._oldNo;
   entity.newItteration = event.params._newNo;
-
+  entity.version = BigInt.fromI32(2);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
@@ -141,7 +142,7 @@ export function handleRecoveredERC20V2(event: RecoveredERC20): void {
   );
   entity.tokenAddress = event.params._token;
   entity.amount = event.params._amount;
-
+  entity.version = BigInt.fromI32(2);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
