@@ -1,4 +1,4 @@
-import { bigInt, BigInt, log } from "@graphprotocol/graph-ts";
+import { BigDecimal, bigInt, BigInt, log } from "@graphprotocol/graph-ts";
 import {
   veSPA,
   GlobalCheckpoint,
@@ -21,6 +21,9 @@ import {
   veSPAIncreaseAmountEvent,
   veSPAIncreaseLockTimeEvent,
   veSPAInitiateCooldownEvent,
+  totalSpaDayStaked,
+  totalSpaStaked,
+  veSPAHolder,
 } from "../generated/schema";
 import {
   timestampConvertDateTime,
@@ -56,9 +59,25 @@ export function handleSupply(event: Supply): void {
       .concat("_")
       .concat(event.block.number.toHexString())
   );
-  let spaDateSupply = new stakedSPASupplyDayEvent(
+  // let spaDateSupply = new stakedSPASupplyDayEvent(
+  //   timestampConvertDate(event.block.timestamp)
+  // );
+
+  let spaDateSupply = stakedSPASupplyDayEvent.load(
     timestampConvertDate(event.block.timestamp)
   );
+
+  // Entities only exist after they have been saved to the store;
+  // `null` checks allow to create entities on demand
+  if (!spaDateSupply) {
+    spaDateSupply = new stakedSPASupplyDayEvent(
+      timestampConvertDate(event.block.timestamp)
+    );
+
+    // Entity fields can be set using simple assignments
+    spaDateSupply.count = BigInt.fromI32(0);
+  }
+
   entity.previousSPASupply = digitsConvert(event.params.prevSupply);
   entity.actualSPASupply = digitsConvert(event.params.supply);
 
@@ -71,7 +90,7 @@ export function handleSupply(event: Supply): void {
 
   spaDateSupply.previousSPASupply = digitsConvert(event.params.prevSupply);
   spaDateSupply.actualSPASupply = digitsConvert(event.params.supply);
-
+  spaDateSupply.count = spaDateSupply.count.plus(BigInt.fromI32(1));
   spaDateSupply.timeStamp = timestampConvertDateTime(event.block.timestamp);
   spaDateSupply.timeStampUnix = event.block.timestamp;
   spaDateSupply.blockNumber = event.block.number;
@@ -84,6 +103,12 @@ export function handleSupply(event: Supply): void {
 }
 
 export function handleUserCheckpoint(event: UserCheckpoint): void {
+  let holder = veSPAHolder.load(event.params.provider.toHex());
+  if (!holder) {
+    holder = new veSPAHolder(event.params.provider.toHex());
+    holder.actionsCount = BigInt.fromI32(0);
+  }
+  let totalActions = new Array<string>(0);
   let entity = new veSPAUserCheckpointEvent(
     event.transaction.from
       .toHex()
@@ -145,6 +170,20 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       depositFor.gasPrice = event.transaction.gasPrice;
       depositFor.gasUsed = event.block.gasUsed;
       depositFor.save();
+
+      holder.actionsCount = holder.actionsCount.plus(BigInt.fromI32(1));
+      holder.holder = event.params.provider;
+      holder.depositedValue = holder.depositedValue.plus(
+        digitsConvert(event.params.value)
+      );
+      holder.autoCooldown = event.params.autoCooldown;
+      holder.expiryUnix = event.params.locktime;
+      holder.expiry = timestampConvertDateTime(event.params.locktime);
+      totalActions=holder.actionType
+      totalActions.push(actionTypeConverter(event.params.actionType));
+      holder.actionType = totalActions;
+      holder.veSPABalance = depositFor.veSPABalance;
+
       break;
     case 1:
       let createLock = new veSPACreateLockEvent(
@@ -178,6 +217,19 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       createLock.gasPrice = event.transaction.gasPrice;
       createLock.gasUsed = event.block.gasUsed;
       createLock.save();
+
+      holder.actionsCount = holder.actionsCount.plus(BigInt.fromI32(1));
+      holder.holder = event.params.provider;
+      holder.depositedValue = holder.depositedValue.plus(
+        digitsConvert(event.params.value)
+      );
+      holder.autoCooldown = event.params.autoCooldown;
+      holder.expiryUnix = event.params.locktime;
+      holder.expiry = timestampConvertDateTime(event.params.locktime);
+      totalActions=holder.actionType
+      totalActions.push(actionTypeConverter(event.params.actionType));
+      holder.actionType = totalActions;
+      holder.veSPABalance = createLock.veSPABalance;
       break;
     case 2:
       let increaseAmount = new veSPAIncreaseAmountEvent(
@@ -211,6 +263,20 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       increaseAmount.gasPrice = event.transaction.gasPrice;
       increaseAmount.gasUsed = event.block.gasUsed;
       increaseAmount.save();
+
+      holder.actionsCount = holder.actionsCount.plus(BigInt.fromI32(1));
+      holder.holder = event.params.provider;
+      holder.depositedValue = holder.depositedValue.plus(
+        digitsConvert(event.params.value)
+      );
+      holder.autoCooldown = event.params.autoCooldown;
+      holder.expiryUnix = event.params.locktime;
+      holder.expiry = timestampConvertDateTime(event.params.locktime);
+      totalActions=holder.actionType
+      totalActions.push(actionTypeConverter(event.params.actionType));
+      holder.actionType = totalActions;
+      holder.veSPABalance = increaseAmount.veSPABalance;
+
       break;
     case 3:
       let increaseLockTime = new veSPAIncreaseLockTimeEvent(
@@ -246,6 +312,21 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       increaseLockTime.gasPrice = event.transaction.gasPrice;
       increaseLockTime.gasUsed = event.block.gasUsed;
       increaseLockTime.save();
+
+      holder.actionsCount = holder.actionsCount.plus(BigInt.fromI32(1));
+      holder.holder = event.params.provider;
+      holder.depositedValue = holder.depositedValue.plus(
+        digitsConvert(event.params.value)
+      );
+      holder.autoCooldown = event.params.autoCooldown;
+      holder.expiryUnix = event.params.locktime;
+      holder.expiry = timestampConvertDateTime(event.params.locktime);
+
+      totalActions=holder.actionType
+      totalActions.push(actionTypeConverter(event.params.actionType));
+      holder.actionType = totalActions;
+      holder.veSPABalance = increaseLockTime.veSPABalance;
+
       break;
     case 4:
       let initiateCooldown = new veSPAInitiateCooldownEvent(
@@ -284,25 +365,38 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       initiateCooldown.gasPrice = event.transaction.gasPrice;
       initiateCooldown.gasUsed = event.block.gasUsed;
       initiateCooldown.save();
+      holder.actionsCount = holder.actionsCount.plus(BigInt.fromI32(1));
+      holder.holder = event.params.provider;
+
+      holder.depositedValue = holder.depositedValue.plus(
+        digitsConvert(event.params.value)
+      );
+      holder.autoCooldown = event.params.autoCooldown;
+      totalActions=holder.actionType
+      totalActions.push(actionTypeConverter(event.params.actionType));
+      holder.actionType = totalActions;
+      holder.veSPABalance = initiateCooldown.veSPABalance;
+      holder.expiryUnix = event.params.locktime;
+      holder.expiry = timestampConvertDateTime(event.params.locktime);
       break;
   }
 
-  let getbalance = contract.try_balanceOf(
-    event.params.provider,
-    BigInt.fromI64(1650495600)
-  );
-  if (getbalance.reverted) {
-    log.debug("veSPA Balance reverted", []);
-  } else {
-    entity.veSPABalance = digitsConvert(getbalance.value);
-  }
-  let veSpa = contract.try_totalSupply();
-  if (veSpa.reverted) {
-    log.debug("veSPA Total Supply reverted", []);
-  } else {
-    vespaSupply.VeSPASupply = digitsConvert(veSpa.value);
-    vespaDateSupply.VeSPASupply = digitsConvert(veSpa.value);
-  }
+  // let getbalance = contract.try_balanceOf(
+  //   event.params.provider,
+  //   BigInt.fromI64(1650495600)
+  // );
+  // if (getbalance.reverted) {
+  //   log.debug("veSPA Balance reverted", []);
+  // } else {
+  //   entity.veSPABalance = digitsConvert(getbalance.value);
+  // }
+  // let veSpa = contract.try_totalSupply();
+  // if (veSpa.reverted) {
+  //   log.debug("veSPA Total Supply reverted", []);
+  // } else {
+  //   vespaSupply.VeSPASupply = digitsConvert(veSpa.value);
+  //   vespaDateSupply.VeSPASupply = digitsConvert(veSpa.value);
+  // }
   entity.actionType = actionTypeConverter(event.params.actionType);
   entity.autoCooldown = event.params.autoCooldown;
   entity.expiryUnix = event.params.locktime;
@@ -331,12 +425,25 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
   vespaDateSupply.gasPrice = event.transaction.gasPrice;
   vespaDateSupply.gasUsed = event.block.gasUsed;
 
+  holder.timeStamp = timestampConvertDateTime(event.block.timestamp);
+  holder.timeStampUnix = event.block.timestamp;
+  holder.blockNumber = event.block.number;
+  holder.transactionHash = event.transaction.hash;
+
+  holder.save();
   vespaDateSupply.save();
   vespaSupply.save();
   entity.save();
 }
 
 export function handleWithdraw(event: Withdraw): void {
+
+  let holder = veSPAHolder.load(event.params.provider.toHex());
+  if (!holder) {
+    holder = new veSPAHolder(event.params.provider.toHex());
+    holder.actionsCount = BigInt.fromI32(0);
+  }
+  let totalActions = new Array<string>(0);
   let entity = new veSPAWithdrawEvent(
     event.transaction.from
       .toHex()
@@ -354,6 +461,26 @@ export function handleWithdraw(event: Withdraw): void {
   entity.transactionHash = event.transaction.hash;
   entity.gasPrice = event.transaction.gasPrice;
   entity.gasUsed = event.block.gasUsed;
+  holder.actionsCount = holder.actionsCount.plus(BigInt.fromI32(1));
+  holder.holder = event.params.provider;
+  holder.depositedValue = holder.depositedValue.minus(
+    digitsConvert(event.params.value)
+  );
+  holder.autoCooldown = holder.autoCooldown;
+  holder.expiryUnix = holder.expiryUnix;
+  holder.expiry = holder.expiry;
+  totalActions=holder.actionType
+  holder.actionType.push("withdraw");
+  holder.actionType = holder.actionType;
+
+  holder.veSPABalance = BigDecimal.fromString("0");
+
+  holder.timeStamp = timestampConvertDateTime(event.block.timestamp);
+  holder.timeStampUnix = event.block.timestamp;
+  holder.blockNumber = event.block.number;
+  holder.transactionHash = event.transaction.hash;
+
+  holder.save();
 
   entity.save();
 }
