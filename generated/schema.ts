@@ -11,13 +11,14 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class veSPAHolder extends Entity {
+export class veSPAActiveHolder extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("count", Value.fromBigInt(BigInt.zero()));
     this.set("actionsCount", Value.fromBigInt(BigInt.zero()));
-    this.set("holder", Value.fromBytes(Bytes.empty()));
+    this.set("activeHolder", Value.fromBytes(Bytes.empty()));
     this.set("depositedValue", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("autoCooldown", Value.fromBoolean(false));
     this.set("expiryUnix", Value.fromBigInt(BigInt.zero()));
@@ -32,19 +33,21 @@ export class veSPAHolder extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save veSPAHolder entity without an ID");
+    assert(id != null, "Cannot save veSPAActiveHolder entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPAHolder entity with non-string ID. " +
+        "Cannot save veSPAActiveHolder entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("veSPAHolder", id.toString(), this);
+      store.set("veSPAActiveHolder", id.toString(), this);
     }
   }
 
-  static load(id: string): veSPAHolder | null {
-    return changetype<veSPAHolder | null>(store.get("veSPAHolder", id));
+  static load(id: string): veSPAActiveHolder | null {
+    return changetype<veSPAActiveHolder | null>(
+      store.get("veSPAActiveHolder", id)
+    );
   }
 
   get id(): string {
@@ -56,6 +59,15 @@ export class veSPAHolder extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get count(): BigInt {
+    let value = this.get("count");
+    return value!.toBigInt();
+  }
+
+  set count(value: BigInt) {
+    this.set("count", Value.fromBigInt(value));
+  }
+
   get actionsCount(): BigInt {
     let value = this.get("actionsCount");
     return value!.toBigInt();
@@ -65,13 +77,13 @@ export class veSPAHolder extends Entity {
     this.set("actionsCount", Value.fromBigInt(value));
   }
 
-  get holder(): Bytes {
-    let value = this.get("holder");
+  get activeHolder(): Bytes {
+    let value = this.get("activeHolder");
     return value!.toBytes();
   }
 
-  set holder(value: Bytes) {
-    this.set("holder", Value.fromBytes(value));
+  set activeHolder(value: Bytes) {
+    this.set("activeHolder", Value.fromBytes(value));
   }
 
   get depositedValue(): BigDecimal {
@@ -126,6 +138,394 @@ export class veSPAHolder extends Entity {
 
   set veSPABalance(value: BigDecimal) {
     this.set("veSPABalance", Value.fromBigDecimal(value));
+  }
+
+  get timeStamp(): string {
+    let value = this.get("timeStamp");
+    return value!.toString();
+  }
+
+  set timeStamp(value: string) {
+    this.set("timeStamp", Value.fromString(value));
+  }
+
+  get timeStampUnix(): BigInt {
+    let value = this.get("timeStampUnix");
+    return value!.toBigInt();
+  }
+
+  set timeStampUnix(value: BigInt) {
+    this.set("timeStampUnix", Value.fromBigInt(value));
+  }
+
+  get blockNumber(): BigInt {
+    let value = this.get("blockNumber");
+    return value!.toBigInt();
+  }
+
+  set blockNumber(value: BigInt) {
+    this.set("blockNumber", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    return value!.toBytes();
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class veSPANumberHolder extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("active", Value.fromBigInt(BigInt.zero()));
+    this.set("all", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save veSPANumberHolder entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save veSPANumberHolder entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("veSPANumberHolder", id.toString(), this);
+    }
+  }
+
+  static load(id: string): veSPANumberHolder | null {
+    return changetype<veSPANumberHolder | null>(
+      store.get("veSPANumberHolder", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get active(): BigInt {
+    let value = this.get("active");
+    return value!.toBigInt();
+  }
+
+  set active(value: BigInt) {
+    this.set("active", Value.fromBigInt(value));
+  }
+
+  get all(): BigInt {
+    let value = this.get("all");
+    return value!.toBigInt();
+  }
+
+  set all(value: BigInt) {
+    this.set("all", Value.fromBigInt(value));
+  }
+}
+
+export class veSPAHolder extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("count", Value.fromBigInt(BigInt.zero()));
+    this.set("actionsCount", Value.fromBigInt(BigInt.zero()));
+    this.set("Holder", Value.fromBytes(Bytes.empty()));
+    this.set("depositedValue", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("autoCooldown", Value.fromBoolean(false));
+    this.set("expiryUnix", Value.fromBigInt(BigInt.zero()));
+    this.set("expiry", Value.fromString(""));
+    this.set("actionType", Value.fromStringArray(new Array(0)));
+    this.set("veSPABalance", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("totalVeSPABalance", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("rewardDistributed", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("totalRewardDistributed", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("timeStamp", Value.fromString(""));
+    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
+    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
+    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save veSPAHolder entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save veSPAHolder entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("veSPAHolder", id.toString(), this);
+    }
+  }
+
+  static load(id: string): veSPAHolder | null {
+    return changetype<veSPAHolder | null>(store.get("veSPAHolder", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get holders(): Array<Bytes> | null {
+    let value = this.get("holders");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytesArray();
+    }
+  }
+
+  set holders(value: Array<Bytes> | null) {
+    if (!value) {
+      this.unset("holders");
+    } else {
+      this.set("holders", Value.fromBytesArray(<Array<Bytes>>value));
+    }
+  }
+
+  get count(): BigInt {
+    let value = this.get("count");
+    return value!.toBigInt();
+  }
+
+  set count(value: BigInt) {
+    this.set("count", Value.fromBigInt(value));
+  }
+
+  get actionsCount(): BigInt {
+    let value = this.get("actionsCount");
+    return value!.toBigInt();
+  }
+
+  set actionsCount(value: BigInt) {
+    this.set("actionsCount", Value.fromBigInt(value));
+  }
+
+  get Holder(): Bytes {
+    let value = this.get("Holder");
+    return value!.toBytes();
+  }
+
+  set Holder(value: Bytes) {
+    this.set("Holder", Value.fromBytes(value));
+  }
+
+  get depositedValue(): BigDecimal {
+    let value = this.get("depositedValue");
+    return value!.toBigDecimal();
+  }
+
+  set depositedValue(value: BigDecimal) {
+    this.set("depositedValue", Value.fromBigDecimal(value));
+  }
+
+  get autoCooldown(): boolean {
+    let value = this.get("autoCooldown");
+    return value!.toBoolean();
+  }
+
+  set autoCooldown(value: boolean) {
+    this.set("autoCooldown", Value.fromBoolean(value));
+  }
+
+  get expiryUnix(): BigInt {
+    let value = this.get("expiryUnix");
+    return value!.toBigInt();
+  }
+
+  set expiryUnix(value: BigInt) {
+    this.set("expiryUnix", Value.fromBigInt(value));
+  }
+
+  get expiry(): string {
+    let value = this.get("expiry");
+    return value!.toString();
+  }
+
+  set expiry(value: string) {
+    this.set("expiry", Value.fromString(value));
+  }
+
+  get actionType(): Array<string> {
+    let value = this.get("actionType");
+    return value!.toStringArray();
+  }
+
+  set actionType(value: Array<string>) {
+    this.set("actionType", Value.fromStringArray(value));
+  }
+
+  get veSPABalance(): BigDecimal {
+    let value = this.get("veSPABalance");
+    return value!.toBigDecimal();
+  }
+
+  set veSPABalance(value: BigDecimal) {
+    this.set("veSPABalance", Value.fromBigDecimal(value));
+  }
+
+  get totalVeSPABalance(): BigDecimal {
+    let value = this.get("totalVeSPABalance");
+    return value!.toBigDecimal();
+  }
+
+  set totalVeSPABalance(value: BigDecimal) {
+    this.set("totalVeSPABalance", Value.fromBigDecimal(value));
+  }
+
+  get rewardDistributed(): BigDecimal {
+    let value = this.get("rewardDistributed");
+    return value!.toBigDecimal();
+  }
+
+  set rewardDistributed(value: BigDecimal) {
+    this.set("rewardDistributed", Value.fromBigDecimal(value));
+  }
+
+  get totalRewardDistributed(): BigDecimal {
+    let value = this.get("totalRewardDistributed");
+    return value!.toBigDecimal();
+  }
+
+  set totalRewardDistributed(value: BigDecimal) {
+    this.set("totalRewardDistributed", Value.fromBigDecimal(value));
+  }
+
+  get timeStamp(): string {
+    let value = this.get("timeStamp");
+    return value!.toString();
+  }
+
+  set timeStamp(value: string) {
+    this.set("timeStamp", Value.fromString(value));
+  }
+
+  get timeStampUnix(): BigInt {
+    let value = this.get("timeStampUnix");
+    return value!.toBigInt();
+  }
+
+  set timeStampUnix(value: BigInt) {
+    this.set("timeStampUnix", Value.fromBigInt(value));
+  }
+
+  get blockNumber(): BigInt {
+    let value = this.get("blockNumber");
+    return value!.toBigInt();
+  }
+
+  set blockNumber(value: BigInt) {
+    this.set("blockNumber", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    return value!.toBytes();
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class holderReward extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("count", Value.fromBigInt(BigInt.zero()));
+    this.set("holder", Value.fromBytes(Bytes.empty()));
+    this.set("veSPABalance", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("timeStamp", Value.fromString(""));
+    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
+    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
+    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save holderReward entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save holderReward entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("holderReward", id.toString(), this);
+    }
+  }
+
+  static load(id: string): holderReward | null {
+    return changetype<holderReward | null>(store.get("holderReward", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get count(): BigInt {
+    let value = this.get("count");
+    return value!.toBigInt();
+  }
+
+  set count(value: BigInt) {
+    this.set("count", Value.fromBigInt(value));
+  }
+
+  get holder(): Bytes {
+    let value = this.get("holder");
+    return value!.toBytes();
+  }
+
+  set holder(value: Bytes) {
+    this.set("holder", Value.fromBytes(value));
+  }
+
+  get veSPABalance(): BigDecimal {
+    let value = this.get("veSPABalance");
+    return value!.toBigDecimal();
+  }
+
+  set veSPABalance(value: BigDecimal) {
+    this.set("veSPABalance", Value.fromBigDecimal(value));
+  }
+
+  get weeklyRewards(): BigDecimal | null {
+    let value = this.get("weeklyRewards");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigDecimal();
+    }
+  }
+
+  set weeklyRewards(value: BigDecimal | null) {
+    if (!value) {
+      this.unset("weeklyRewards");
+    } else {
+      this.set("weeklyRewards", Value.fromBigDecimal(<BigDecimal>value));
+    }
   }
 
   get timeStamp(): string {

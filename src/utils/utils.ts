@@ -7,7 +7,6 @@ import {
   log,
 } from "@graphprotocol/graph-ts";
 
-
 //Convert timestamp to Date
 export function timestampConvertDateTime(time: BigInt): string {
   let date = new Date(1000 * time.toI32());
@@ -24,6 +23,18 @@ export function timestampConvertDate(time: BigInt): string {
 
   return dateConverted;
 }
+export function timestampConvertWeek(time: BigInt): string {
+  let date = new Date(1000 * time.toI32());
+  let year = date.getUTCFullYear();
+  let timestampYear = (year - 1970) * 86400 * 365 + 13 * 86400;
+
+  return year
+    .toString()
+    .concat("_")
+    .concat(
+      Math.ceil(((time.toI32() - timestampYear) / 86400 + 1) / 7).toString()
+    );
+}
 export function digitsConvert(value: BigInt): BigDecimal {
   let converted = value
     .toBigDecimal()
@@ -39,21 +50,21 @@ export function collateralConvert(value: BigInt): BigDecimal {
 
 export function actionTypeConverter(actionType: u32): string {
   let actionTypeConverted: string = "";
-  switch(actionType) {
+  switch (actionType) {
     case 0:
-      actionTypeConverted = 'Deposit For';
+      actionTypeConverted = "Deposit For";
       break;
     case 1:
-      actionTypeConverted = 'Create Lock';
+      actionTypeConverted = "Create Lock";
       break;
     case 2:
-      actionTypeConverted = 'Increase Amount';
+      actionTypeConverted = "Increase Amount";
       break;
     case 3:
-      actionTypeConverted = 'Increase Lock Time';
+      actionTypeConverted = "Increase Lock Time";
       break;
     case 4:
-      actionTypeConverted = 'Initiate Cooldown';
+      actionTypeConverted = "Initiate Cooldown";
       break;
   }
 

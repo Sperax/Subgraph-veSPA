@@ -26,10 +26,7 @@ import {
 
 export function handleClaimedV2(event: Claimed): void {
   let entity = new veSPARewardClaimedEvent(
-    event.transaction.from
-      .toHex()
-      .concat("_")
-      .concat(event.block.number.toHexString())
+ event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
   );
 
   entity.recipient = event.params._recipient;
@@ -56,10 +53,7 @@ export function handleClaimedV2(event: Claimed): void {
 
 export function handleCheckpointAllowedV2(event: CheckpointAllowed): void {
   let entity = new veSPARewardCheckpointAllowedEvent(
-    event.transaction.from
-      .toHex()
-      .concat("_")
-      .concat(event.block.number.toHexString())
+ event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
   );
   entity.version = BigInt.fromI32(2);
   entity.allowed = event.params._allowed;
@@ -75,10 +69,7 @@ export function handleCheckpointAllowedV2(event: CheckpointAllowed): void {
 
 export function handleKilledV2(event: Killed): void {
   let entity = new veSPARewardKilledEvent(
-    event.transaction.from
-      .toHex()
-      .concat("_")
-      .concat(event.block.number.toHexString())
+ event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
   );
   entity.version = BigInt.fromI32(2);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
@@ -92,10 +83,7 @@ export function handleKilledV2(event: Killed): void {
 }
 export function handleRewardsCheckpointedV2(event: RewardsCheckpointed): void {
   let entity = new veSPARewardCheckpointEvent(
-    event.transaction.from
-      .toHex()
-      .concat("_")
-      .concat(event.block.number.toHexString())
+ event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
   );
   entity.amount = digitsConvert(event.params._amount);
   entity.version = BigInt.fromI32(2);
@@ -114,10 +102,7 @@ export function handleMaxIterationsUpdatedV2(
   event: MaxIterationsUpdated
 ): void {
   let entity = new veSPARewardMaxItterationUpdate(
-    event.transaction.from
-      .toHex()
-      .concat("_")
-      .concat(event.block.number.toHexString())
+ event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
   );
 
   entity.oldItteration = event.params._oldNo;
@@ -135,10 +120,7 @@ export function handleMaxIterationsUpdatedV2(
 
 export function handleRecoveredERC20V2(event: RecoveredERC20): void {
   let entity = new veSPARecoverERC20Event(
-    event.transaction.from
-      .toHex()
-      .concat("_")
-      .concat(event.block.number.toHexString())
+ event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
   );
   entity.tokenAddress = event.params._token;
   entity.amount = event.params._amount;
