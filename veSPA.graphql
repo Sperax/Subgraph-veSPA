@@ -308,3 +308,79 @@ type veSPARewardKilledEvent @entity {
   blockNumber: BigInt!
   transactionHash: Bytes!
 }
+#-----------xSPA------------------------
+type Approval @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! # address
+  spender: Bytes! # address
+  value: BigInt! # uint256
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+type Initialized @entity(immutable: true) {
+  id: Bytes!
+  version: Int! # uint8
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+type RedemptionRequested @entity(immutable: true) {
+  id: Bytes!
+  _by: Bytes! # address
+  _requestId: BigInt! # uint256
+  _xSpaAmount: BigDecimal! # uint256
+  _unlockTime: String! # string
+  _unlockTimeUnix: BigInt # uint256
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+type SPARedeemed @entity(immutable: true) {
+  id: Bytes!
+  _redeemer: Bytes! # address
+  _recipient: Bytes! # address
+  _requestId: BigInt! # uint256
+  _spaAmount: BigDecimal! # uint256
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+type StakedInVeSPA @entity(immutable: true) {
+  id: Bytes!
+  _for: Bytes! # address
+  _spaAmount: BigDecimal! # uint128
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+type Transfer @entity(immutable: true) {
+  id: Bytes!
+  from: Bytes! # address
+  to: Bytes! # address
+  value: BigDecimal! # uint256
+  timeStamp: String!
+  timeStampUnix: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}

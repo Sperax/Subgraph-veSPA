@@ -1,4 +1,4 @@
-specVersion: 0.0.2
+specVersion: 0.0.4
 schema:
   file: ./veSPA.graphql
 dataSources:
@@ -11,7 +11,7 @@ dataSources:
       startBlock: 9349300
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
         - GlobalCheckpoint
@@ -44,7 +44,7 @@ dataSources:
       startBlock: 9719072
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
         - CheckpointAllowed
@@ -82,7 +82,7 @@ dataSources:
       startBlock: 24747020
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
         - CheckpointAllowed
@@ -111,3 +111,41 @@ dataSources:
         - event: RewardsCheckpointed(uint256)
           handler: handleRewardsCheckpointedV2
       file: ./src/RD_V2.ts
+  - kind: ethereum
+    name: xSPA
+    network: arbitrum-one
+    source:
+      address: "0x0966E72256d6055145902F72F9D3B6a194B9cCc3"
+      abi: xSPA
+      startBlock: 128257830
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - Initialized
+        - OwnershipTransferred
+        - RedemptionRequested
+        - SPARedeemed
+        - StakedInVeSPA
+        - Transfer
+      abis:
+        - name: xSPA
+          file: ./abis/xSPA.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RedemptionRequested(indexed address,uint256,uint256,uint256)
+          handler: handleRedemptionRequested
+        - event: SPARedeemed(indexed address,indexed address,uint256,uint256)
+          handler: handleSPARedeemed
+        - event: StakedInVeSPA(indexed address,uint128)
+          handler: handleStakedInVeSPA
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/x-spa.ts

@@ -15,20 +15,6 @@ export class veSPAActiveHolder extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("count", Value.fromBigInt(BigInt.zero()));
-    this.set("actionsCount", Value.fromBigInt(BigInt.zero()));
-    this.set("activeHolder", Value.fromBytes(Bytes.empty()));
-    this.set("depositedValue", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("autoCooldown", Value.fromBoolean(false));
-    this.set("expiryUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("expiry", Value.fromString(""));
-    this.set("actionType", Value.fromStringArray(new Array(0)));
-    this.set("veSPABalance", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -37,11 +23,16 @@ export class veSPAActiveHolder extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPAActiveHolder entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPAActiveHolder must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPAActiveHolder", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPAActiveHolder | null {
+    return changetype<veSPAActiveHolder | null>(
+      store.get_in_block("veSPAActiveHolder", id)
+    );
   }
 
   static load(id: string): veSPAActiveHolder | null {
@@ -52,7 +43,11 @@ export class veSPAActiveHolder extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -61,7 +56,11 @@ export class veSPAActiveHolder extends Entity {
 
   get count(): BigInt {
     let value = this.get("count");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set count(value: BigInt) {
@@ -70,7 +69,11 @@ export class veSPAActiveHolder extends Entity {
 
   get actionsCount(): BigInt {
     let value = this.get("actionsCount");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set actionsCount(value: BigInt) {
@@ -79,7 +82,11 @@ export class veSPAActiveHolder extends Entity {
 
   get activeHolder(): Bytes {
     let value = this.get("activeHolder");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set activeHolder(value: Bytes) {
@@ -88,7 +95,11 @@ export class veSPAActiveHolder extends Entity {
 
   get depositedValue(): BigDecimal {
     let value = this.get("depositedValue");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set depositedValue(value: BigDecimal) {
@@ -97,7 +108,11 @@ export class veSPAActiveHolder extends Entity {
 
   get autoCooldown(): boolean {
     let value = this.get("autoCooldown");
-    return value!.toBoolean();
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
   }
 
   set autoCooldown(value: boolean) {
@@ -106,7 +121,11 @@ export class veSPAActiveHolder extends Entity {
 
   get expiryUnix(): BigInt {
     let value = this.get("expiryUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set expiryUnix(value: BigInt) {
@@ -115,7 +134,11 @@ export class veSPAActiveHolder extends Entity {
 
   get expiry(): string {
     let value = this.get("expiry");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set expiry(value: string) {
@@ -124,7 +147,11 @@ export class veSPAActiveHolder extends Entity {
 
   get actionType(): Array<string> {
     let value = this.get("actionType");
-    return value!.toStringArray();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toStringArray();
+    }
   }
 
   set actionType(value: Array<string>) {
@@ -133,7 +160,11 @@ export class veSPAActiveHolder extends Entity {
 
   get veSPABalance(): BigDecimal {
     let value = this.get("veSPABalance");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set veSPABalance(value: BigDecimal) {
@@ -142,7 +173,11 @@ export class veSPAActiveHolder extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -151,7 +186,11 @@ export class veSPAActiveHolder extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -160,7 +199,11 @@ export class veSPAActiveHolder extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -169,7 +212,11 @@ export class veSPAActiveHolder extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -181,9 +228,6 @@ export class veSPANumberHolder extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("active", Value.fromBigInt(BigInt.zero()));
-    this.set("all", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -192,11 +236,16 @@ export class veSPANumberHolder extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPANumberHolder entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPANumberHolder must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPANumberHolder", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPANumberHolder | null {
+    return changetype<veSPANumberHolder | null>(
+      store.get_in_block("veSPANumberHolder", id)
+    );
   }
 
   static load(id: string): veSPANumberHolder | null {
@@ -207,7 +256,11 @@ export class veSPANumberHolder extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -216,7 +269,11 @@ export class veSPANumberHolder extends Entity {
 
   get active(): BigInt {
     let value = this.get("active");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set active(value: BigInt) {
@@ -225,7 +282,11 @@ export class veSPANumberHolder extends Entity {
 
   get all(): BigInt {
     let value = this.get("all");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set all(value: BigInt) {
@@ -237,23 +298,6 @@ export class veSPAHolder extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("count", Value.fromBigInt(BigInt.zero()));
-    this.set("actionsCount", Value.fromBigInt(BigInt.zero()));
-    this.set("Holder", Value.fromBytes(Bytes.empty()));
-    this.set("depositedValue", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("autoCooldown", Value.fromBoolean(false));
-    this.set("expiryUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("expiry", Value.fromString(""));
-    this.set("actionType", Value.fromStringArray(new Array(0)));
-    this.set("veSPABalance", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("totalVeSPABalance", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("rewardDistributed", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("totalRewardDistributed", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -262,11 +306,16 @@ export class veSPAHolder extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPAHolder entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPAHolder must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPAHolder", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPAHolder | null {
+    return changetype<veSPAHolder | null>(
+      store.get_in_block("veSPAHolder", id)
+    );
   }
 
   static load(id: string): veSPAHolder | null {
@@ -275,7 +324,11 @@ export class veSPAHolder extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -301,7 +354,11 @@ export class veSPAHolder extends Entity {
 
   get count(): BigInt {
     let value = this.get("count");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set count(value: BigInt) {
@@ -310,7 +367,11 @@ export class veSPAHolder extends Entity {
 
   get actionsCount(): BigInt {
     let value = this.get("actionsCount");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set actionsCount(value: BigInt) {
@@ -319,7 +380,11 @@ export class veSPAHolder extends Entity {
 
   get Holder(): Bytes {
     let value = this.get("Holder");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set Holder(value: Bytes) {
@@ -328,7 +393,11 @@ export class veSPAHolder extends Entity {
 
   get depositedValue(): BigDecimal {
     let value = this.get("depositedValue");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set depositedValue(value: BigDecimal) {
@@ -337,7 +406,11 @@ export class veSPAHolder extends Entity {
 
   get autoCooldown(): boolean {
     let value = this.get("autoCooldown");
-    return value!.toBoolean();
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
   }
 
   set autoCooldown(value: boolean) {
@@ -346,7 +419,11 @@ export class veSPAHolder extends Entity {
 
   get expiryUnix(): BigInt {
     let value = this.get("expiryUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set expiryUnix(value: BigInt) {
@@ -355,7 +432,11 @@ export class veSPAHolder extends Entity {
 
   get expiry(): string {
     let value = this.get("expiry");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set expiry(value: string) {
@@ -364,7 +445,11 @@ export class veSPAHolder extends Entity {
 
   get actionType(): Array<string> {
     let value = this.get("actionType");
-    return value!.toStringArray();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toStringArray();
+    }
   }
 
   set actionType(value: Array<string>) {
@@ -373,7 +458,11 @@ export class veSPAHolder extends Entity {
 
   get veSPABalance(): BigDecimal {
     let value = this.get("veSPABalance");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set veSPABalance(value: BigDecimal) {
@@ -382,7 +471,11 @@ export class veSPAHolder extends Entity {
 
   get totalVeSPABalance(): BigDecimal {
     let value = this.get("totalVeSPABalance");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set totalVeSPABalance(value: BigDecimal) {
@@ -391,7 +484,11 @@ export class veSPAHolder extends Entity {
 
   get rewardDistributed(): BigDecimal {
     let value = this.get("rewardDistributed");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set rewardDistributed(value: BigDecimal) {
@@ -400,7 +497,11 @@ export class veSPAHolder extends Entity {
 
   get totalRewardDistributed(): BigDecimal {
     let value = this.get("totalRewardDistributed");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set totalRewardDistributed(value: BigDecimal) {
@@ -409,7 +510,11 @@ export class veSPAHolder extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -418,7 +523,11 @@ export class veSPAHolder extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -427,7 +536,11 @@ export class veSPAHolder extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -436,7 +549,11 @@ export class veSPAHolder extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -448,14 +565,6 @@ export class holderReward extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("count", Value.fromBigInt(BigInt.zero()));
-    this.set("holder", Value.fromBytes(Bytes.empty()));
-    this.set("veSPABalance", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -464,11 +573,16 @@ export class holderReward extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save holderReward entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type holderReward must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("holderReward", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): holderReward | null {
+    return changetype<holderReward | null>(
+      store.get_in_block("holderReward", id)
+    );
   }
 
   static load(id: string): holderReward | null {
@@ -477,7 +591,11 @@ export class holderReward extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -486,7 +604,11 @@ export class holderReward extends Entity {
 
   get count(): BigInt {
     let value = this.get("count");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set count(value: BigInt) {
@@ -495,7 +617,11 @@ export class holderReward extends Entity {
 
   get holder(): Bytes {
     let value = this.get("holder");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set holder(value: Bytes) {
@@ -504,7 +630,11 @@ export class holderReward extends Entity {
 
   get veSPABalance(): BigDecimal {
     let value = this.get("veSPABalance");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set veSPABalance(value: BigDecimal) {
@@ -530,7 +660,11 @@ export class holderReward extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -539,7 +673,11 @@ export class holderReward extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -548,7 +686,11 @@ export class holderReward extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -557,7 +699,11 @@ export class holderReward extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -569,20 +715,6 @@ export class veSPAUserCheckpointEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("provider", Value.fromBytes(Bytes.empty()));
-    this.set("depositedValue", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("autoCooldown", Value.fromBoolean(false));
-    this.set("expiryUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("expiry", Value.fromString(""));
-    this.set("actionType", Value.fromString(""));
-    this.set("veSPABalance", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -594,11 +726,16 @@ export class veSPAUserCheckpointEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPAUserCheckpointEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPAUserCheckpointEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPAUserCheckpointEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPAUserCheckpointEvent | null {
+    return changetype<veSPAUserCheckpointEvent | null>(
+      store.get_in_block("veSPAUserCheckpointEvent", id)
+    );
   }
 
   static load(id: string): veSPAUserCheckpointEvent | null {
@@ -609,7 +746,11 @@ export class veSPAUserCheckpointEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -618,7 +759,11 @@ export class veSPAUserCheckpointEvent extends Entity {
 
   get provider(): Bytes {
     let value = this.get("provider");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set provider(value: Bytes) {
@@ -627,7 +772,11 @@ export class veSPAUserCheckpointEvent extends Entity {
 
   get depositedValue(): BigDecimal {
     let value = this.get("depositedValue");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set depositedValue(value: BigDecimal) {
@@ -636,7 +785,11 @@ export class veSPAUserCheckpointEvent extends Entity {
 
   get autoCooldown(): boolean {
     let value = this.get("autoCooldown");
-    return value!.toBoolean();
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
   }
 
   set autoCooldown(value: boolean) {
@@ -645,7 +798,11 @@ export class veSPAUserCheckpointEvent extends Entity {
 
   get expiryUnix(): BigInt {
     let value = this.get("expiryUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set expiryUnix(value: BigInt) {
@@ -654,7 +811,11 @@ export class veSPAUserCheckpointEvent extends Entity {
 
   get expiry(): string {
     let value = this.get("expiry");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set expiry(value: string) {
@@ -663,7 +824,11 @@ export class veSPAUserCheckpointEvent extends Entity {
 
   get actionType(): string {
     let value = this.get("actionType");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set actionType(value: string) {
@@ -672,7 +837,11 @@ export class veSPAUserCheckpointEvent extends Entity {
 
   get veSPABalance(): BigDecimal {
     let value = this.get("veSPABalance");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set veSPABalance(value: BigDecimal) {
@@ -681,7 +850,11 @@ export class veSPAUserCheckpointEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -690,7 +863,11 @@ export class veSPAUserCheckpointEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -699,7 +876,11 @@ export class veSPAUserCheckpointEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -708,7 +889,11 @@ export class veSPAUserCheckpointEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -717,7 +902,11 @@ export class veSPAUserCheckpointEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -726,7 +915,11 @@ export class veSPAUserCheckpointEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -738,20 +931,6 @@ export class veSPACreateLockEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("provider", Value.fromBytes(Bytes.empty()));
-    this.set("depositedValue", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("autoCooldown", Value.fromBoolean(false));
-    this.set("expiryUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("expiry", Value.fromString(""));
-    this.set("actionType", Value.fromString(""));
-    this.set("veSPABalance", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -760,11 +939,16 @@ export class veSPACreateLockEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPACreateLockEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPACreateLockEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPACreateLockEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPACreateLockEvent | null {
+    return changetype<veSPACreateLockEvent | null>(
+      store.get_in_block("veSPACreateLockEvent", id)
+    );
   }
 
   static load(id: string): veSPACreateLockEvent | null {
@@ -775,7 +959,11 @@ export class veSPACreateLockEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -784,7 +972,11 @@ export class veSPACreateLockEvent extends Entity {
 
   get provider(): Bytes {
     let value = this.get("provider");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set provider(value: Bytes) {
@@ -793,7 +985,11 @@ export class veSPACreateLockEvent extends Entity {
 
   get depositedValue(): BigDecimal {
     let value = this.get("depositedValue");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set depositedValue(value: BigDecimal) {
@@ -802,7 +998,11 @@ export class veSPACreateLockEvent extends Entity {
 
   get autoCooldown(): boolean {
     let value = this.get("autoCooldown");
-    return value!.toBoolean();
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
   }
 
   set autoCooldown(value: boolean) {
@@ -811,7 +1011,11 @@ export class veSPACreateLockEvent extends Entity {
 
   get expiryUnix(): BigInt {
     let value = this.get("expiryUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set expiryUnix(value: BigInt) {
@@ -820,7 +1024,11 @@ export class veSPACreateLockEvent extends Entity {
 
   get expiry(): string {
     let value = this.get("expiry");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set expiry(value: string) {
@@ -829,7 +1037,11 @@ export class veSPACreateLockEvent extends Entity {
 
   get actionType(): string {
     let value = this.get("actionType");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set actionType(value: string) {
@@ -838,7 +1050,11 @@ export class veSPACreateLockEvent extends Entity {
 
   get veSPABalance(): BigDecimal {
     let value = this.get("veSPABalance");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set veSPABalance(value: BigDecimal) {
@@ -847,7 +1063,11 @@ export class veSPACreateLockEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -856,7 +1076,11 @@ export class veSPACreateLockEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -865,7 +1089,11 @@ export class veSPACreateLockEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -874,7 +1102,11 @@ export class veSPACreateLockEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -883,7 +1115,11 @@ export class veSPACreateLockEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -892,7 +1128,11 @@ export class veSPACreateLockEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -904,18 +1144,6 @@ export class veSPAIncreaseAmountEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("provider", Value.fromBytes(Bytes.empty()));
-    this.set("depositedValue", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("autoCooldown", Value.fromBoolean(false));
-    this.set("actionType", Value.fromString(""));
-    this.set("veSPABalance", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -927,11 +1155,16 @@ export class veSPAIncreaseAmountEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPAIncreaseAmountEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPAIncreaseAmountEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPAIncreaseAmountEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPAIncreaseAmountEvent | null {
+    return changetype<veSPAIncreaseAmountEvent | null>(
+      store.get_in_block("veSPAIncreaseAmountEvent", id)
+    );
   }
 
   static load(id: string): veSPAIncreaseAmountEvent | null {
@@ -942,7 +1175,11 @@ export class veSPAIncreaseAmountEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -951,7 +1188,11 @@ export class veSPAIncreaseAmountEvent extends Entity {
 
   get provider(): Bytes {
     let value = this.get("provider");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set provider(value: Bytes) {
@@ -960,7 +1201,11 @@ export class veSPAIncreaseAmountEvent extends Entity {
 
   get depositedValue(): BigDecimal {
     let value = this.get("depositedValue");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set depositedValue(value: BigDecimal) {
@@ -969,7 +1214,11 @@ export class veSPAIncreaseAmountEvent extends Entity {
 
   get autoCooldown(): boolean {
     let value = this.get("autoCooldown");
-    return value!.toBoolean();
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
   }
 
   set autoCooldown(value: boolean) {
@@ -978,7 +1227,11 @@ export class veSPAIncreaseAmountEvent extends Entity {
 
   get actionType(): string {
     let value = this.get("actionType");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set actionType(value: string) {
@@ -987,7 +1240,11 @@ export class veSPAIncreaseAmountEvent extends Entity {
 
   get veSPABalance(): BigDecimal {
     let value = this.get("veSPABalance");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set veSPABalance(value: BigDecimal) {
@@ -996,7 +1253,11 @@ export class veSPAIncreaseAmountEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -1005,7 +1266,11 @@ export class veSPAIncreaseAmountEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -1014,7 +1279,11 @@ export class veSPAIncreaseAmountEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -1023,7 +1292,11 @@ export class veSPAIncreaseAmountEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -1032,7 +1305,11 @@ export class veSPAIncreaseAmountEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -1041,7 +1318,11 @@ export class veSPAIncreaseAmountEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -1053,12 +1334,6 @@ export class totalSpaDayStaked extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("totalStaked", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -1067,11 +1342,16 @@ export class totalSpaDayStaked extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save totalSpaDayStaked entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type totalSpaDayStaked must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("totalSpaDayStaked", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): totalSpaDayStaked | null {
+    return changetype<totalSpaDayStaked | null>(
+      store.get_in_block("totalSpaDayStaked", id)
+    );
   }
 
   static load(id: string): totalSpaDayStaked | null {
@@ -1082,7 +1362,11 @@ export class totalSpaDayStaked extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -1091,7 +1375,11 @@ export class totalSpaDayStaked extends Entity {
 
   get totalStaked(): BigDecimal {
     let value = this.get("totalStaked");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set totalStaked(value: BigDecimal) {
@@ -1100,7 +1388,11 @@ export class totalSpaDayStaked extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -1109,7 +1401,11 @@ export class totalSpaDayStaked extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -1118,7 +1414,11 @@ export class totalSpaDayStaked extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -1127,7 +1427,11 @@ export class totalSpaDayStaked extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -1139,12 +1443,6 @@ export class totalSpaStaked extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("totalStaked", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -1153,11 +1451,16 @@ export class totalSpaStaked extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save totalSpaStaked entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type totalSpaStaked must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("totalSpaStaked", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): totalSpaStaked | null {
+    return changetype<totalSpaStaked | null>(
+      store.get_in_block("totalSpaStaked", id)
+    );
   }
 
   static load(id: string): totalSpaStaked | null {
@@ -1166,7 +1469,11 @@ export class totalSpaStaked extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -1175,7 +1482,11 @@ export class totalSpaStaked extends Entity {
 
   get totalStaked(): BigDecimal {
     let value = this.get("totalStaked");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set totalStaked(value: BigDecimal) {
@@ -1184,7 +1495,11 @@ export class totalSpaStaked extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -1193,7 +1508,11 @@ export class totalSpaStaked extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -1202,7 +1521,11 @@ export class totalSpaStaked extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -1211,7 +1534,11 @@ export class totalSpaStaked extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -1223,19 +1550,6 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("provider", Value.fromBytes(Bytes.empty()));
-    this.set("autoCooldown", Value.fromBoolean(false));
-    this.set("expiryUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("expiry", Value.fromString(""));
-    this.set("actionType", Value.fromString(""));
-    this.set("veSPABalance", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -1247,11 +1561,16 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPAIncreaseLockTimeEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPAIncreaseLockTimeEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPAIncreaseLockTimeEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPAIncreaseLockTimeEvent | null {
+    return changetype<veSPAIncreaseLockTimeEvent | null>(
+      store.get_in_block("veSPAIncreaseLockTimeEvent", id)
+    );
   }
 
   static load(id: string): veSPAIncreaseLockTimeEvent | null {
@@ -1262,7 +1581,11 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -1271,7 +1594,11 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
 
   get provider(): Bytes {
     let value = this.get("provider");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set provider(value: Bytes) {
@@ -1280,7 +1607,11 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
 
   get autoCooldown(): boolean {
     let value = this.get("autoCooldown");
-    return value!.toBoolean();
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
   }
 
   set autoCooldown(value: boolean) {
@@ -1289,7 +1620,11 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
 
   get expiryUnix(): BigInt {
     let value = this.get("expiryUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set expiryUnix(value: BigInt) {
@@ -1298,7 +1633,11 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
 
   get expiry(): string {
     let value = this.get("expiry");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set expiry(value: string) {
@@ -1307,7 +1646,11 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
 
   get actionType(): string {
     let value = this.get("actionType");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set actionType(value: string) {
@@ -1316,7 +1659,11 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
 
   get veSPABalance(): BigDecimal {
     let value = this.get("veSPABalance");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set veSPABalance(value: BigDecimal) {
@@ -1325,7 +1672,11 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -1334,7 +1685,11 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -1343,7 +1698,11 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -1352,7 +1711,11 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -1361,7 +1724,11 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -1370,7 +1737,11 @@ export class veSPAIncreaseLockTimeEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -1382,20 +1753,6 @@ export class veSPAInitiateCooldownEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("provider", Value.fromBytes(Bytes.empty()));
-    this.set("depositedValue", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("autoCooldown", Value.fromBoolean(false));
-    this.set("expiryUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("expiry", Value.fromString(""));
-    this.set("actionType", Value.fromString(""));
-    this.set("veSPABalance", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -1407,11 +1764,16 @@ export class veSPAInitiateCooldownEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPAInitiateCooldownEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPAInitiateCooldownEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPAInitiateCooldownEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPAInitiateCooldownEvent | null {
+    return changetype<veSPAInitiateCooldownEvent | null>(
+      store.get_in_block("veSPAInitiateCooldownEvent", id)
+    );
   }
 
   static load(id: string): veSPAInitiateCooldownEvent | null {
@@ -1422,7 +1784,11 @@ export class veSPAInitiateCooldownEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -1431,7 +1797,11 @@ export class veSPAInitiateCooldownEvent extends Entity {
 
   get provider(): Bytes {
     let value = this.get("provider");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set provider(value: Bytes) {
@@ -1440,7 +1810,11 @@ export class veSPAInitiateCooldownEvent extends Entity {
 
   get depositedValue(): BigDecimal {
     let value = this.get("depositedValue");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set depositedValue(value: BigDecimal) {
@@ -1449,7 +1823,11 @@ export class veSPAInitiateCooldownEvent extends Entity {
 
   get autoCooldown(): boolean {
     let value = this.get("autoCooldown");
-    return value!.toBoolean();
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
   }
 
   set autoCooldown(value: boolean) {
@@ -1458,7 +1836,11 @@ export class veSPAInitiateCooldownEvent extends Entity {
 
   get expiryUnix(): BigInt {
     let value = this.get("expiryUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set expiryUnix(value: BigInt) {
@@ -1467,7 +1849,11 @@ export class veSPAInitiateCooldownEvent extends Entity {
 
   get expiry(): string {
     let value = this.get("expiry");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set expiry(value: string) {
@@ -1476,7 +1862,11 @@ export class veSPAInitiateCooldownEvent extends Entity {
 
   get actionType(): string {
     let value = this.get("actionType");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set actionType(value: string) {
@@ -1485,7 +1875,11 @@ export class veSPAInitiateCooldownEvent extends Entity {
 
   get veSPABalance(): BigDecimal {
     let value = this.get("veSPABalance");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set veSPABalance(value: BigDecimal) {
@@ -1494,7 +1888,11 @@ export class veSPAInitiateCooldownEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -1503,7 +1901,11 @@ export class veSPAInitiateCooldownEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -1512,7 +1914,11 @@ export class veSPAInitiateCooldownEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -1521,7 +1927,11 @@ export class veSPAInitiateCooldownEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -1530,7 +1940,11 @@ export class veSPAInitiateCooldownEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -1539,7 +1953,11 @@ export class veSPAInitiateCooldownEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -1551,18 +1969,6 @@ export class veSPADepositForEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("provider", Value.fromBytes(Bytes.empty()));
-    this.set("depositedValue", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("autoCooldown", Value.fromBoolean(false));
-    this.set("actionType", Value.fromString(""));
-    this.set("veSPABalance", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -1571,11 +1977,16 @@ export class veSPADepositForEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPADepositForEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPADepositForEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPADepositForEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPADepositForEvent | null {
+    return changetype<veSPADepositForEvent | null>(
+      store.get_in_block("veSPADepositForEvent", id)
+    );
   }
 
   static load(id: string): veSPADepositForEvent | null {
@@ -1586,7 +1997,11 @@ export class veSPADepositForEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -1595,7 +2010,11 @@ export class veSPADepositForEvent extends Entity {
 
   get provider(): Bytes {
     let value = this.get("provider");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set provider(value: Bytes) {
@@ -1604,7 +2023,11 @@ export class veSPADepositForEvent extends Entity {
 
   get depositedValue(): BigDecimal {
     let value = this.get("depositedValue");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set depositedValue(value: BigDecimal) {
@@ -1613,7 +2036,11 @@ export class veSPADepositForEvent extends Entity {
 
   get autoCooldown(): boolean {
     let value = this.get("autoCooldown");
-    return value!.toBoolean();
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
   }
 
   set autoCooldown(value: boolean) {
@@ -1622,7 +2049,11 @@ export class veSPADepositForEvent extends Entity {
 
   get actionType(): string {
     let value = this.get("actionType");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set actionType(value: string) {
@@ -1631,7 +2062,11 @@ export class veSPADepositForEvent extends Entity {
 
   get veSPABalance(): BigDecimal {
     let value = this.get("veSPABalance");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set veSPABalance(value: BigDecimal) {
@@ -1640,7 +2075,11 @@ export class veSPADepositForEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -1649,7 +2088,11 @@ export class veSPADepositForEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -1658,7 +2101,11 @@ export class veSPADepositForEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -1667,7 +2114,11 @@ export class veSPADepositForEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -1676,7 +2127,11 @@ export class veSPADepositForEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -1685,7 +2140,11 @@ export class veSPADepositForEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -1697,15 +2156,6 @@ export class stakedSPASupplyEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("previousSPASupply", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("actualSPASupply", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -1714,11 +2164,16 @@ export class stakedSPASupplyEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save stakedSPASupplyEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type stakedSPASupplyEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("stakedSPASupplyEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): stakedSPASupplyEvent | null {
+    return changetype<stakedSPASupplyEvent | null>(
+      store.get_in_block("stakedSPASupplyEvent", id)
+    );
   }
 
   static load(id: string): stakedSPASupplyEvent | null {
@@ -1729,7 +2184,11 @@ export class stakedSPASupplyEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -1738,7 +2197,11 @@ export class stakedSPASupplyEvent extends Entity {
 
   get previousSPASupply(): BigDecimal {
     let value = this.get("previousSPASupply");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set previousSPASupply(value: BigDecimal) {
@@ -1747,7 +2210,11 @@ export class stakedSPASupplyEvent extends Entity {
 
   get actualSPASupply(): BigDecimal {
     let value = this.get("actualSPASupply");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set actualSPASupply(value: BigDecimal) {
@@ -1756,7 +2223,11 @@ export class stakedSPASupplyEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -1765,7 +2236,11 @@ export class stakedSPASupplyEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -1774,7 +2249,11 @@ export class stakedSPASupplyEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -1783,7 +2262,11 @@ export class stakedSPASupplyEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -1792,7 +2275,11 @@ export class stakedSPASupplyEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -1801,7 +2288,11 @@ export class stakedSPASupplyEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -1813,16 +2304,6 @@ export class stakedSPASupplyDayEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("previousSPASupply", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("actualSPASupply", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("count", Value.fromBigInt(BigInt.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -1834,11 +2315,16 @@ export class stakedSPASupplyDayEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save stakedSPASupplyDayEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type stakedSPASupplyDayEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("stakedSPASupplyDayEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): stakedSPASupplyDayEvent | null {
+    return changetype<stakedSPASupplyDayEvent | null>(
+      store.get_in_block("stakedSPASupplyDayEvent", id)
+    );
   }
 
   static load(id: string): stakedSPASupplyDayEvent | null {
@@ -1849,7 +2335,11 @@ export class stakedSPASupplyDayEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -1858,7 +2348,11 @@ export class stakedSPASupplyDayEvent extends Entity {
 
   get previousSPASupply(): BigDecimal {
     let value = this.get("previousSPASupply");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set previousSPASupply(value: BigDecimal) {
@@ -1867,7 +2361,11 @@ export class stakedSPASupplyDayEvent extends Entity {
 
   get actualSPASupply(): BigDecimal {
     let value = this.get("actualSPASupply");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set actualSPASupply(value: BigDecimal) {
@@ -1876,7 +2374,11 @@ export class stakedSPASupplyDayEvent extends Entity {
 
   get count(): BigInt {
     let value = this.get("count");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set count(value: BigInt) {
@@ -1885,7 +2387,11 @@ export class stakedSPASupplyDayEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -1894,7 +2400,11 @@ export class stakedSPASupplyDayEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -1903,7 +2413,11 @@ export class stakedSPASupplyDayEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -1912,7 +2426,11 @@ export class stakedSPASupplyDayEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -1921,7 +2439,11 @@ export class stakedSPASupplyDayEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -1930,7 +2452,11 @@ export class stakedSPASupplyDayEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -1942,14 +2468,6 @@ export class veSPASupplyEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("VeSPASupply", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -1958,11 +2476,16 @@ export class veSPASupplyEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPASupplyEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPASupplyEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPASupplyEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPASupplyEvent | null {
+    return changetype<veSPASupplyEvent | null>(
+      store.get_in_block("veSPASupplyEvent", id)
+    );
   }
 
   static load(id: string): veSPASupplyEvent | null {
@@ -1973,7 +2496,11 @@ export class veSPASupplyEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -1982,7 +2509,11 @@ export class veSPASupplyEvent extends Entity {
 
   get VeSPASupply(): BigDecimal {
     let value = this.get("VeSPASupply");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set VeSPASupply(value: BigDecimal) {
@@ -1991,7 +2522,11 @@ export class veSPASupplyEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -2000,7 +2535,11 @@ export class veSPASupplyEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -2009,7 +2548,11 @@ export class veSPASupplyEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -2018,7 +2561,11 @@ export class veSPASupplyEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -2027,7 +2574,11 @@ export class veSPASupplyEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -2036,7 +2587,11 @@ export class veSPASupplyEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -2048,14 +2603,6 @@ export class veSPASupplyDayEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("VeSPASupply", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -2064,11 +2611,16 @@ export class veSPASupplyDayEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPASupplyDayEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPASupplyDayEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPASupplyDayEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPASupplyDayEvent | null {
+    return changetype<veSPASupplyDayEvent | null>(
+      store.get_in_block("veSPASupplyDayEvent", id)
+    );
   }
 
   static load(id: string): veSPASupplyDayEvent | null {
@@ -2079,7 +2631,11 @@ export class veSPASupplyDayEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -2088,7 +2644,11 @@ export class veSPASupplyDayEvent extends Entity {
 
   get VeSPASupply(): BigDecimal {
     let value = this.get("VeSPASupply");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set VeSPASupply(value: BigDecimal) {
@@ -2097,7 +2657,11 @@ export class veSPASupplyDayEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -2106,7 +2670,11 @@ export class veSPASupplyDayEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -2115,7 +2683,11 @@ export class veSPASupplyDayEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -2124,7 +2696,11 @@ export class veSPASupplyDayEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -2133,7 +2709,11 @@ export class veSPASupplyDayEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -2142,7 +2722,11 @@ export class veSPASupplyDayEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -2154,15 +2738,6 @@ export class veSPAGlobalCheckpointEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("caller", Value.fromBytes(Bytes.empty()));
-    this.set("epoch", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -2174,11 +2749,16 @@ export class veSPAGlobalCheckpointEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPAGlobalCheckpointEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPAGlobalCheckpointEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPAGlobalCheckpointEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPAGlobalCheckpointEvent | null {
+    return changetype<veSPAGlobalCheckpointEvent | null>(
+      store.get_in_block("veSPAGlobalCheckpointEvent", id)
+    );
   }
 
   static load(id: string): veSPAGlobalCheckpointEvent | null {
@@ -2189,7 +2769,11 @@ export class veSPAGlobalCheckpointEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -2198,7 +2782,11 @@ export class veSPAGlobalCheckpointEvent extends Entity {
 
   get caller(): Bytes {
     let value = this.get("caller");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set caller(value: Bytes) {
@@ -2207,7 +2795,11 @@ export class veSPAGlobalCheckpointEvent extends Entity {
 
   get epoch(): BigDecimal {
     let value = this.get("epoch");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set epoch(value: BigDecimal) {
@@ -2216,7 +2808,11 @@ export class veSPAGlobalCheckpointEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -2225,7 +2821,11 @@ export class veSPAGlobalCheckpointEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -2234,7 +2834,11 @@ export class veSPAGlobalCheckpointEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -2243,7 +2847,11 @@ export class veSPAGlobalCheckpointEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -2252,7 +2860,11 @@ export class veSPAGlobalCheckpointEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -2261,7 +2873,11 @@ export class veSPAGlobalCheckpointEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -2273,16 +2889,6 @@ export class veSPAWithdrawEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("provider", Value.fromBytes(Bytes.empty()));
-    this.set("withdrawTime", Value.fromBigInt(BigInt.zero()));
-    this.set("withdrawnValue", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -2291,11 +2897,16 @@ export class veSPAWithdrawEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPAWithdrawEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPAWithdrawEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPAWithdrawEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPAWithdrawEvent | null {
+    return changetype<veSPAWithdrawEvent | null>(
+      store.get_in_block("veSPAWithdrawEvent", id)
+    );
   }
 
   static load(id: string): veSPAWithdrawEvent | null {
@@ -2306,7 +2917,11 @@ export class veSPAWithdrawEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -2315,7 +2930,11 @@ export class veSPAWithdrawEvent extends Entity {
 
   get provider(): Bytes {
     let value = this.get("provider");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set provider(value: Bytes) {
@@ -2324,7 +2943,11 @@ export class veSPAWithdrawEvent extends Entity {
 
   get withdrawTime(): BigInt {
     let value = this.get("withdrawTime");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set withdrawTime(value: BigInt) {
@@ -2333,7 +2956,11 @@ export class veSPAWithdrawEvent extends Entity {
 
   get withdrawnValue(): BigDecimal {
     let value = this.get("withdrawnValue");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set withdrawnValue(value: BigDecimal) {
@@ -2342,7 +2969,11 @@ export class veSPAWithdrawEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -2351,7 +2982,11 @@ export class veSPAWithdrawEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -2360,7 +2995,11 @@ export class veSPAWithdrawEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -2369,7 +3008,11 @@ export class veSPAWithdrawEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -2378,7 +3021,11 @@ export class veSPAWithdrawEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -2387,7 +3034,11 @@ export class veSPAWithdrawEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -2399,21 +3050,6 @@ export class veSPARewardClaimedEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("recipient", Value.fromBytes(Bytes.empty()));
-    this.set("lastRewardClaimTimeUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("rewardClaimTillUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("lastRewardClaimTime", Value.fromString(""));
-    this.set("rewardClaimTill", Value.fromString(""));
-    this.set("rewardAmount", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("staked", Value.fromBoolean(false));
-    this.set("version", Value.fromBigInt(BigInt.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -2425,11 +3061,16 @@ export class veSPARewardClaimedEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPARewardClaimedEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPARewardClaimedEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPARewardClaimedEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPARewardClaimedEvent | null {
+    return changetype<veSPARewardClaimedEvent | null>(
+      store.get_in_block("veSPARewardClaimedEvent", id)
+    );
   }
 
   static load(id: string): veSPARewardClaimedEvent | null {
@@ -2440,7 +3081,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -2449,7 +3094,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get recipient(): Bytes {
     let value = this.get("recipient");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set recipient(value: Bytes) {
@@ -2458,7 +3107,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get lastRewardClaimTimeUnix(): BigInt {
     let value = this.get("lastRewardClaimTimeUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set lastRewardClaimTimeUnix(value: BigInt) {
@@ -2467,7 +3120,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get rewardClaimTillUnix(): BigInt {
     let value = this.get("rewardClaimTillUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set rewardClaimTillUnix(value: BigInt) {
@@ -2476,7 +3133,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get lastRewardClaimTime(): string {
     let value = this.get("lastRewardClaimTime");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set lastRewardClaimTime(value: string) {
@@ -2485,7 +3146,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get rewardClaimTill(): string {
     let value = this.get("rewardClaimTill");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set rewardClaimTill(value: string) {
@@ -2494,7 +3159,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get rewardAmount(): BigDecimal {
     let value = this.get("rewardAmount");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set rewardAmount(value: BigDecimal) {
@@ -2503,7 +3172,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get staked(): boolean {
     let value = this.get("staked");
-    return value!.toBoolean();
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
   }
 
   set staked(value: boolean) {
@@ -2512,7 +3185,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get version(): BigInt {
     let value = this.get("version");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set version(value: BigInt) {
@@ -2521,7 +3198,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -2530,7 +3211,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -2539,7 +3224,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -2548,7 +3237,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -2557,7 +3250,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -2566,7 +3263,11 @@ export class veSPARewardClaimedEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -2578,15 +3279,6 @@ export class veSPARewardCheckpointAllowedEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("allowed", Value.fromBoolean(false));
-    this.set("version", Value.fromBigInt(BigInt.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -2598,11 +3290,16 @@ export class veSPARewardCheckpointAllowedEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPARewardCheckpointAllowedEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPARewardCheckpointAllowedEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPARewardCheckpointAllowedEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPARewardCheckpointAllowedEvent | null {
+    return changetype<veSPARewardCheckpointAllowedEvent | null>(
+      store.get_in_block("veSPARewardCheckpointAllowedEvent", id)
+    );
   }
 
   static load(id: string): veSPARewardCheckpointAllowedEvent | null {
@@ -2613,7 +3310,11 @@ export class veSPARewardCheckpointAllowedEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -2622,7 +3323,11 @@ export class veSPARewardCheckpointAllowedEvent extends Entity {
 
   get allowed(): boolean {
     let value = this.get("allowed");
-    return value!.toBoolean();
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
   }
 
   set allowed(value: boolean) {
@@ -2631,7 +3336,11 @@ export class veSPARewardCheckpointAllowedEvent extends Entity {
 
   get version(): BigInt {
     let value = this.get("version");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set version(value: BigInt) {
@@ -2640,7 +3349,11 @@ export class veSPARewardCheckpointAllowedEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -2649,7 +3362,11 @@ export class veSPARewardCheckpointAllowedEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -2658,7 +3375,11 @@ export class veSPARewardCheckpointAllowedEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -2667,7 +3388,11 @@ export class veSPARewardCheckpointAllowedEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -2676,7 +3401,11 @@ export class veSPARewardCheckpointAllowedEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -2685,7 +3414,11 @@ export class veSPARewardCheckpointAllowedEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -2697,15 +3430,6 @@ export class veSPARewardCheckpointEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("version", Value.fromBigInt(BigInt.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -2717,11 +3441,16 @@ export class veSPARewardCheckpointEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPARewardCheckpointEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPARewardCheckpointEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPARewardCheckpointEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPARewardCheckpointEvent | null {
+    return changetype<veSPARewardCheckpointEvent | null>(
+      store.get_in_block("veSPARewardCheckpointEvent", id)
+    );
   }
 
   static load(id: string): veSPARewardCheckpointEvent | null {
@@ -2732,7 +3461,11 @@ export class veSPARewardCheckpointEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -2741,7 +3474,11 @@ export class veSPARewardCheckpointEvent extends Entity {
 
   get amount(): BigDecimal {
     let value = this.get("amount");
-    return value!.toBigDecimal();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
   }
 
   set amount(value: BigDecimal) {
@@ -2750,7 +3487,11 @@ export class veSPARewardCheckpointEvent extends Entity {
 
   get version(): BigInt {
     let value = this.get("version");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set version(value: BigInt) {
@@ -2759,7 +3500,11 @@ export class veSPARewardCheckpointEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -2768,7 +3513,11 @@ export class veSPARewardCheckpointEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -2777,7 +3526,11 @@ export class veSPARewardCheckpointEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -2786,7 +3539,11 @@ export class veSPARewardCheckpointEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -2795,7 +3552,11 @@ export class veSPARewardCheckpointEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -2804,7 +3565,11 @@ export class veSPARewardCheckpointEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -2816,16 +3581,6 @@ export class veSPARewardMaxItterationUpdate extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("oldItteration", Value.fromBigInt(BigInt.zero()));
-    this.set("newItteration", Value.fromBigInt(BigInt.zero()));
-    this.set("version", Value.fromBigInt(BigInt.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -2837,11 +3592,16 @@ export class veSPARewardMaxItterationUpdate extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPARewardMaxItterationUpdate entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPARewardMaxItterationUpdate must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPARewardMaxItterationUpdate", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPARewardMaxItterationUpdate | null {
+    return changetype<veSPARewardMaxItterationUpdate | null>(
+      store.get_in_block("veSPARewardMaxItterationUpdate", id)
+    );
   }
 
   static load(id: string): veSPARewardMaxItterationUpdate | null {
@@ -2852,7 +3612,11 @@ export class veSPARewardMaxItterationUpdate extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -2861,7 +3625,11 @@ export class veSPARewardMaxItterationUpdate extends Entity {
 
   get oldItteration(): BigInt {
     let value = this.get("oldItteration");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set oldItteration(value: BigInt) {
@@ -2870,7 +3638,11 @@ export class veSPARewardMaxItterationUpdate extends Entity {
 
   get newItteration(): BigInt {
     let value = this.get("newItteration");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set newItteration(value: BigInt) {
@@ -2879,7 +3651,11 @@ export class veSPARewardMaxItterationUpdate extends Entity {
 
   get version(): BigInt {
     let value = this.get("version");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set version(value: BigInt) {
@@ -2888,7 +3664,11 @@ export class veSPARewardMaxItterationUpdate extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -2897,7 +3677,11 @@ export class veSPARewardMaxItterationUpdate extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -2906,7 +3690,11 @@ export class veSPARewardMaxItterationUpdate extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -2915,7 +3703,11 @@ export class veSPARewardMaxItterationUpdate extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -2924,7 +3716,11 @@ export class veSPARewardMaxItterationUpdate extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -2933,7 +3729,11 @@ export class veSPARewardMaxItterationUpdate extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -2945,16 +3745,6 @@ export class veSPARecoverERC20Event extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("tokenAddress", Value.fromBytes(Bytes.empty()));
-    this.set("amount", Value.fromBigInt(BigInt.zero()));
-    this.set("version", Value.fromBigInt(BigInt.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -2966,11 +3756,16 @@ export class veSPARecoverERC20Event extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPARecoverERC20Event entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPARecoverERC20Event must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPARecoverERC20Event", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPARecoverERC20Event | null {
+    return changetype<veSPARecoverERC20Event | null>(
+      store.get_in_block("veSPARecoverERC20Event", id)
+    );
   }
 
   static load(id: string): veSPARecoverERC20Event | null {
@@ -2981,7 +3776,11 @@ export class veSPARecoverERC20Event extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -2990,7 +3789,11 @@ export class veSPARecoverERC20Event extends Entity {
 
   get tokenAddress(): Bytes {
     let value = this.get("tokenAddress");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set tokenAddress(value: Bytes) {
@@ -2999,7 +3802,11 @@ export class veSPARecoverERC20Event extends Entity {
 
   get amount(): BigInt {
     let value = this.get("amount");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set amount(value: BigInt) {
@@ -3008,7 +3815,11 @@ export class veSPARecoverERC20Event extends Entity {
 
   get version(): BigInt {
     let value = this.get("version");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set version(value: BigInt) {
@@ -3017,7 +3828,11 @@ export class veSPARecoverERC20Event extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -3026,7 +3841,11 @@ export class veSPARecoverERC20Event extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -3035,7 +3854,11 @@ export class veSPARecoverERC20Event extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -3044,7 +3867,11 @@ export class veSPARecoverERC20Event extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -3053,7 +3880,11 @@ export class veSPARecoverERC20Event extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -3062,7 +3893,11 @@ export class veSPARecoverERC20Event extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {
@@ -3074,14 +3909,6 @@ export class veSPARewardKilledEvent extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("version", Value.fromBigInt(BigInt.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
-    this.set("gasUsed", Value.fromBigInt(BigInt.zero()));
-    this.set("timeStamp", Value.fromString(""));
-    this.set("timeStampUnix", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -3093,11 +3920,16 @@ export class veSPARewardKilledEvent extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save veSPARewardKilledEvent entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type veSPARewardKilledEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("veSPARewardKilledEvent", id.toString(), this);
     }
+  }
+
+  static loadInBlock(id: string): veSPARewardKilledEvent | null {
+    return changetype<veSPARewardKilledEvent | null>(
+      store.get_in_block("veSPARewardKilledEvent", id)
+    );
   }
 
   static load(id: string): veSPARewardKilledEvent | null {
@@ -3108,7 +3940,11 @@ export class veSPARewardKilledEvent extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -3117,7 +3953,11 @@ export class veSPARewardKilledEvent extends Entity {
 
   get version(): BigInt {
     let value = this.get("version");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set version(value: BigInt) {
@@ -3126,7 +3966,11 @@ export class veSPARewardKilledEvent extends Entity {
 
   get gasPrice(): BigInt {
     let value = this.get("gasPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasPrice(value: BigInt) {
@@ -3135,7 +3979,11 @@ export class veSPARewardKilledEvent extends Entity {
 
   get gasUsed(): BigInt {
     let value = this.get("gasUsed");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set gasUsed(value: BigInt) {
@@ -3144,7 +3992,11 @@ export class veSPARewardKilledEvent extends Entity {
 
   get timeStamp(): string {
     let value = this.get("timeStamp");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set timeStamp(value: string) {
@@ -3153,7 +4005,11 @@ export class veSPARewardKilledEvent extends Entity {
 
   get timeStampUnix(): BigInt {
     let value = this.get("timeStampUnix");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set timeStampUnix(value: BigInt) {
@@ -3162,7 +4018,11 @@ export class veSPARewardKilledEvent extends Entity {
 
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
   set blockNumber(value: BigInt) {
@@ -3171,7 +4031,943 @@ export class veSPARewardKilledEvent extends Entity {
 
   get transactionHash(): Bytes {
     let value = this.get("transactionHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class Approval extends Entity {
+  constructor(id: Bytes) {
+    super();
+    this.set("id", Value.fromBytes(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Approval entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.BYTES,
+        `Entities of type Approval must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Approval", id.toBytes().toHexString(), this);
+    }
+  }
+
+  static loadInBlock(id: Bytes): Approval | null {
+    return changetype<Approval | null>(
+      store.get_in_block("Approval", id.toHexString())
+    );
+  }
+
+  static load(id: Bytes): Approval | null {
+    return changetype<Approval | null>(store.get("Approval", id.toHexString()));
+  }
+
+  get id(): Bytes {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
+  }
+
+  get owner(): Bytes {
+    let value = this.get("owner");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set owner(value: Bytes) {
+    this.set("owner", Value.fromBytes(value));
+  }
+
+  get spender(): Bytes {
+    let value = this.get("spender");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set spender(value: Bytes) {
+    this.set("spender", Value.fromBytes(value));
+  }
+
+  get value(): BigInt {
+    let value = this.get("value");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set value(value: BigInt) {
+    this.set("value", Value.fromBigInt(value));
+  }
+
+  get timeStamp(): string {
+    let value = this.get("timeStamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set timeStamp(value: string) {
+    this.set("timeStamp", Value.fromString(value));
+  }
+
+  get timeStampUnix(): BigInt {
+    let value = this.get("timeStampUnix");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timeStampUnix(value: BigInt) {
+    this.set("timeStampUnix", Value.fromBigInt(value));
+  }
+
+  get blockNumber(): BigInt {
+    let value = this.get("blockNumber");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blockNumber(value: BigInt) {
+    this.set("blockNumber", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class Initialized extends Entity {
+  constructor(id: Bytes) {
+    super();
+    this.set("id", Value.fromBytes(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Initialized entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.BYTES,
+        `Entities of type Initialized must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Initialized", id.toBytes().toHexString(), this);
+    }
+  }
+
+  static loadInBlock(id: Bytes): Initialized | null {
+    return changetype<Initialized | null>(
+      store.get_in_block("Initialized", id.toHexString())
+    );
+  }
+
+  static load(id: Bytes): Initialized | null {
+    return changetype<Initialized | null>(
+      store.get("Initialized", id.toHexString())
+    );
+  }
+
+  get id(): Bytes {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
+  }
+
+  get version(): i32 {
+    let value = this.get("version");
+    if (!value || value.kind == ValueKind.NULL) {
+      return 0;
+    } else {
+      return value.toI32();
+    }
+  }
+
+  set version(value: i32) {
+    this.set("version", Value.fromI32(value));
+  }
+
+  get timeStamp(): string {
+    let value = this.get("timeStamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set timeStamp(value: string) {
+    this.set("timeStamp", Value.fromString(value));
+  }
+
+  get timeStampUnix(): BigInt {
+    let value = this.get("timeStampUnix");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timeStampUnix(value: BigInt) {
+    this.set("timeStampUnix", Value.fromBigInt(value));
+  }
+
+  get blockNumber(): BigInt {
+    let value = this.get("blockNumber");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blockNumber(value: BigInt) {
+    this.set("blockNumber", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class OwnershipTransferred extends Entity {
+  constructor(id: Bytes) {
+    super();
+    this.set("id", Value.fromBytes(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save OwnershipTransferred entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.BYTES,
+        `Entities of type OwnershipTransferred must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("OwnershipTransferred", id.toBytes().toHexString(), this);
+    }
+  }
+
+  static loadInBlock(id: Bytes): OwnershipTransferred | null {
+    return changetype<OwnershipTransferred | null>(
+      store.get_in_block("OwnershipTransferred", id.toHexString())
+    );
+  }
+
+  static load(id: Bytes): OwnershipTransferred | null {
+    return changetype<OwnershipTransferred | null>(
+      store.get("OwnershipTransferred", id.toHexString())
+    );
+  }
+
+  get id(): Bytes {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
+  }
+
+  get previousOwner(): Bytes {
+    let value = this.get("previousOwner");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set previousOwner(value: Bytes) {
+    this.set("previousOwner", Value.fromBytes(value));
+  }
+
+  get newOwner(): Bytes {
+    let value = this.get("newOwner");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set newOwner(value: Bytes) {
+    this.set("newOwner", Value.fromBytes(value));
+  }
+
+  get timeStamp(): string {
+    let value = this.get("timeStamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set timeStamp(value: string) {
+    this.set("timeStamp", Value.fromString(value));
+  }
+
+  get timeStampUnix(): BigInt {
+    let value = this.get("timeStampUnix");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timeStampUnix(value: BigInt) {
+    this.set("timeStampUnix", Value.fromBigInt(value));
+  }
+
+  get blockNumber(): BigInt {
+    let value = this.get("blockNumber");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blockNumber(value: BigInt) {
+    this.set("blockNumber", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class RedemptionRequested extends Entity {
+  constructor(id: Bytes) {
+    super();
+    this.set("id", Value.fromBytes(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save RedemptionRequested entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.BYTES,
+        `Entities of type RedemptionRequested must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("RedemptionRequested", id.toBytes().toHexString(), this);
+    }
+  }
+
+  static loadInBlock(id: Bytes): RedemptionRequested | null {
+    return changetype<RedemptionRequested | null>(
+      store.get_in_block("RedemptionRequested", id.toHexString())
+    );
+  }
+
+  static load(id: Bytes): RedemptionRequested | null {
+    return changetype<RedemptionRequested | null>(
+      store.get("RedemptionRequested", id.toHexString())
+    );
+  }
+
+  get id(): Bytes {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
+  }
+
+  get _by(): Bytes {
+    let value = this.get("_by");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set _by(value: Bytes) {
+    this.set("_by", Value.fromBytes(value));
+  }
+
+  get _requestId(): BigInt {
+    let value = this.get("_requestId");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set _requestId(value: BigInt) {
+    this.set("_requestId", Value.fromBigInt(value));
+  }
+
+  get _xSpaAmount(): BigDecimal {
+    let value = this.get("_xSpaAmount");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
+  }
+
+  set _xSpaAmount(value: BigDecimal) {
+    this.set("_xSpaAmount", Value.fromBigDecimal(value));
+  }
+
+  get _unlockTime(): string {
+    let value = this.get("_unlockTime");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set _unlockTime(value: string) {
+    this.set("_unlockTime", Value.fromString(value));
+  }
+
+  get _unlockTimeUnix(): BigInt | null {
+    let value = this.get("_unlockTimeUnix");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set _unlockTimeUnix(value: BigInt | null) {
+    if (!value) {
+      this.unset("_unlockTimeUnix");
+    } else {
+      this.set("_unlockTimeUnix", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get timeStamp(): string {
+    let value = this.get("timeStamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set timeStamp(value: string) {
+    this.set("timeStamp", Value.fromString(value));
+  }
+
+  get timeStampUnix(): BigInt {
+    let value = this.get("timeStampUnix");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timeStampUnix(value: BigInt) {
+    this.set("timeStampUnix", Value.fromBigInt(value));
+  }
+
+  get blockNumber(): BigInt {
+    let value = this.get("blockNumber");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blockNumber(value: BigInt) {
+    this.set("blockNumber", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class SPARedeemed extends Entity {
+  constructor(id: Bytes) {
+    super();
+    this.set("id", Value.fromBytes(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save SPARedeemed entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.BYTES,
+        `Entities of type SPARedeemed must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("SPARedeemed", id.toBytes().toHexString(), this);
+    }
+  }
+
+  static loadInBlock(id: Bytes): SPARedeemed | null {
+    return changetype<SPARedeemed | null>(
+      store.get_in_block("SPARedeemed", id.toHexString())
+    );
+  }
+
+  static load(id: Bytes): SPARedeemed | null {
+    return changetype<SPARedeemed | null>(
+      store.get("SPARedeemed", id.toHexString())
+    );
+  }
+
+  get id(): Bytes {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
+  }
+
+  get _redeemer(): Bytes {
+    let value = this.get("_redeemer");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set _redeemer(value: Bytes) {
+    this.set("_redeemer", Value.fromBytes(value));
+  }
+
+  get _recipient(): Bytes {
+    let value = this.get("_recipient");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set _recipient(value: Bytes) {
+    this.set("_recipient", Value.fromBytes(value));
+  }
+
+  get _requestId(): BigInt {
+    let value = this.get("_requestId");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set _requestId(value: BigInt) {
+    this.set("_requestId", Value.fromBigInt(value));
+  }
+
+  get _spaAmount(): BigDecimal {
+    let value = this.get("_spaAmount");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
+  }
+
+  set _spaAmount(value: BigDecimal) {
+    this.set("_spaAmount", Value.fromBigDecimal(value));
+  }
+
+  get timeStamp(): string {
+    let value = this.get("timeStamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set timeStamp(value: string) {
+    this.set("timeStamp", Value.fromString(value));
+  }
+
+  get timeStampUnix(): BigInt {
+    let value = this.get("timeStampUnix");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timeStampUnix(value: BigInt) {
+    this.set("timeStampUnix", Value.fromBigInt(value));
+  }
+
+  get blockNumber(): BigInt {
+    let value = this.get("blockNumber");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blockNumber(value: BigInt) {
+    this.set("blockNumber", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class StakedInVeSPA extends Entity {
+  constructor(id: Bytes) {
+    super();
+    this.set("id", Value.fromBytes(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save StakedInVeSPA entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.BYTES,
+        `Entities of type StakedInVeSPA must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("StakedInVeSPA", id.toBytes().toHexString(), this);
+    }
+  }
+
+  static loadInBlock(id: Bytes): StakedInVeSPA | null {
+    return changetype<StakedInVeSPA | null>(
+      store.get_in_block("StakedInVeSPA", id.toHexString())
+    );
+  }
+
+  static load(id: Bytes): StakedInVeSPA | null {
+    return changetype<StakedInVeSPA | null>(
+      store.get("StakedInVeSPA", id.toHexString())
+    );
+  }
+
+  get id(): Bytes {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
+  }
+
+  get _for(): Bytes {
+    let value = this.get("_for");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set _for(value: Bytes) {
+    this.set("_for", Value.fromBytes(value));
+  }
+
+  get _spaAmount(): BigDecimal {
+    let value = this.get("_spaAmount");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
+  }
+
+  set _spaAmount(value: BigDecimal) {
+    this.set("_spaAmount", Value.fromBigDecimal(value));
+  }
+
+  get timeStamp(): string {
+    let value = this.get("timeStamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set timeStamp(value: string) {
+    this.set("timeStamp", Value.fromString(value));
+  }
+
+  get timeStampUnix(): BigInt {
+    let value = this.get("timeStampUnix");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timeStampUnix(value: BigInt) {
+    this.set("timeStampUnix", Value.fromBigInt(value));
+  }
+
+  get blockNumber(): BigInt {
+    let value = this.get("blockNumber");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blockNumber(value: BigInt) {
+    this.set("blockNumber", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class Transfer extends Entity {
+  constructor(id: Bytes) {
+    super();
+    this.set("id", Value.fromBytes(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Transfer entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.BYTES,
+        `Entities of type Transfer must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Transfer", id.toBytes().toHexString(), this);
+    }
+  }
+
+  static loadInBlock(id: Bytes): Transfer | null {
+    return changetype<Transfer | null>(
+      store.get_in_block("Transfer", id.toHexString())
+    );
+  }
+
+  static load(id: Bytes): Transfer | null {
+    return changetype<Transfer | null>(store.get("Transfer", id.toHexString()));
+  }
+
+  get id(): Bytes {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
+  }
+
+  get from(): Bytes {
+    let value = this.get("from");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set from(value: Bytes) {
+    this.set("from", Value.fromBytes(value));
+  }
+
+  get to(): Bytes {
+    let value = this.get("to");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set to(value: Bytes) {
+    this.set("to", Value.fromBytes(value));
+  }
+
+  get value(): BigDecimal {
+    let value = this.get("value");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigDecimal();
+    }
+  }
+
+  set value(value: BigDecimal) {
+    this.set("value", Value.fromBigDecimal(value));
+  }
+
+  get timeStamp(): string {
+    let value = this.get("timeStamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set timeStamp(value: string) {
+    this.set("timeStamp", Value.fromString(value));
+  }
+
+  get timeStampUnix(): BigInt {
+    let value = this.get("timeStampUnix");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timeStampUnix(value: BigInt) {
+    this.set("timeStampUnix", Value.fromBigInt(value));
+  }
+
+  get blockNumber(): BigInt {
+    let value = this.get("blockNumber");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blockNumber(value: BigInt) {
+    this.set("blockNumber", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set transactionHash(value: Bytes) {

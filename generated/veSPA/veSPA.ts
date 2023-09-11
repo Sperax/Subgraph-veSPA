@@ -178,6 +178,38 @@ export class veSPA__estimateDepositResult {
     map.set("value7", ethereum.Value.fromUnsignedBigInt(this.value7));
     return map;
   }
+
+  getValue0(): boolean {
+    return this.value0;
+  }
+
+  getInitialVespaBalance(): BigInt {
+    return this.value1;
+  }
+
+  getSlope(): BigInt {
+    return this.value2;
+  }
+
+  getBias(): BigInt {
+    return this.value3;
+  }
+
+  getResidue(): BigInt {
+    return this.value4;
+  }
+
+  getActualUnlockTime(): BigInt {
+    return this.value5;
+  }
+
+  getProvidedUnlockTime(): BigInt {
+    return this.value6;
+  }
+
+  getResiduePeriodStart(): BigInt {
+    return this.value7;
+  }
 }
 
 export class veSPA__lockedBalancesResult {
@@ -205,6 +237,22 @@ export class veSPA__lockedBalancesResult {
     map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
     map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
     return map;
+  }
+
+  getAutoCooldown(): boolean {
+    return this.value0;
+  }
+
+  getCooldownInitiated(): boolean {
+    return this.value1;
+  }
+
+  getAmount(): BigInt {
+    return this.value2;
+  }
+
+  getEnd(): BigInt {
+    return this.value3;
   }
 }
 
@@ -238,6 +286,26 @@ export class veSPA__pointHistoryResult {
     map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     return map;
   }
+
+  getBias(): BigInt {
+    return this.value0;
+  }
+
+  getSlope(): BigInt {
+    return this.value1;
+  }
+
+  getResidue(): BigInt {
+    return this.value2;
+  }
+
+  getTs(): BigInt {
+    return this.value3;
+  }
+
+  getBlk(): BigInt {
+    return this.value4;
+  }
 }
 
 export class veSPA__userPointHistoryResult {
@@ -269,6 +337,26 @@ export class veSPA__userPointHistoryResult {
     map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
     map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     return map;
+  }
+
+  getBias(): BigInt {
+    return this.value0;
+  }
+
+  getSlope(): BigInt {
+    return this.value1;
+  }
+
+  getResidue(): BigInt {
+    return this.value2;
+  }
+
+  getTs(): BigInt {
+    return this.value3;
+  }
+
+  getBlk(): BigInt {
+    return this.value4;
   }
 }
 
