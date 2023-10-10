@@ -1,6 +1,5 @@
 type veSPAActiveHolder @entity {
   id: ID!
-  count:BigInt!
   actionsCount:BigInt!
   activeHolder: Bytes!
   depositedValue: BigDecimal!
@@ -22,7 +21,6 @@ type veSPANumberHolder @entity {
 type veSPAHolder @entity {
   id: ID!
   holders:[Bytes!]
-  count:BigInt!
   actionsCount:BigInt!
   Holder: Bytes!
   depositedValue: BigDecimal!

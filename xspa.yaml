@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: xspa.graphql
+  file: ./xspa.graphql
 dataSources:
   - kind: ethereum
     name: xSPA
@@ -23,7 +23,7 @@ dataSources:
         - Transfer
       abis:
         - name: xSPA
-          file: xSPA/abis/xSPA.json
+          file: ./abis/xSPA.json
       eventHandlers:
         - event: Approval(indexed address,indexed address,uint256)
           handler: handleApproval
@@ -39,4 +39,4 @@ dataSources:
           handler: handleStakedInVeSPA
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: xSPA/xSPA.wasm
+      file: ./src/x-spa.ts

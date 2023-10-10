@@ -45,7 +45,10 @@ import {
 
 export function handleGlobalCheckpoint(event: GlobalCheckpoint): void {
   let entity = new veSPAGlobalCheckpointEvent(
-    event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
+    event.transaction.hash
+      .toHex()
+      .concat("_")
+      .concat(event.logIndex.toString())
   );
 
   entity.caller = event.params.caller;
@@ -62,7 +65,10 @@ export function handleGlobalCheckpoint(event: GlobalCheckpoint): void {
 
 export function handleSupply(event: Supply): void {
   let entity = new stakedSPASupplyEvent(
-    event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
+    event.transaction.hash
+      .toHex()
+      .concat("_")
+      .concat(event.logIndex.toString())
   );
   // let spaDateSupply = new stakedSPASupplyDayEvent(
   //   timestampConvertDate(event.block.timestamp)
@@ -113,13 +119,16 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
   if (!activeHolder) {
     activeHolder = new veSPAActiveHolder(event.params.provider.toHex());
     activeHolder.actionsCount = BigInt.fromI32(0);
+    activeHolder.activeHolder = event.params.provider
+    activeHolder.depositedValue= BigDecimal.fromString("0")
+    activeHolder.autoCooldown= false
+    
   }
   let Holder = veSPAHolder.load(event.params.provider.toHex());
   if (!Holder) {
     arrayHolders.push(event.params.provider);
     Holder = new veSPAHolder(event.params.provider.toHex());
     Holder.actionsCount = BigInt.fromI32(0);
-    Holder.count = Holder.count.plus(BigInt.fromI32(1));
     Holder.holders = arrayHolders;
   }
   let totalActions = new Array<string>(0);
@@ -200,6 +209,7 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       totalActions.push(actionTypeConverter(event.params.actionType));
       activeHolder.actionType = totalActions;
       activeHolder.veSPABalance = depositFor.veSPABalance;
+      // activeHolder.count = (BigInt.fromI32(1));
 
       Holder.actionsCount = activeHolder.actionsCount;
       Holder.Holder = event.params.provider;
@@ -231,7 +241,7 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
               .concat(event.block.number.toHexString())
           )
       );
-      activeHolder.count = activeHolder.count.plus(BigInt.fromI32(1));
+      // activeHolder.count = activeHolder.count.plus(BigInt.fromI32(1));
       let getbalance1 = contract.try_balanceOf1(event.params.provider);
       if (getbalance1.reverted) {
         log.debug("veSPA Balance reverted", []);
@@ -547,10 +557,13 @@ export function handleWithdraw(event: Withdraw): void {
   }
 
   let entity = new veSPAWithdrawEvent(
-    event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
+    event.transaction.hash
+      .toHex()
+      .concat("_")
+      .concat(event.logIndex.toString())
   );
-  let oldHolderNumber = Holder.count;
-  Holder.count = oldHolderNumber.minus(BigInt.fromI32(1));
+  // let oldHolderNumber = Holder.count;
+  // Holder.count = oldHolderNumber.minus(BigInt.fromI32(1));
   entity.provider = event.params.provider;
   entity.withdrawTime = event.params.ts;
   entity.withdrawnValue = digitsConvert(event.params.value);

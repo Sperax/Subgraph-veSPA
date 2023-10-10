@@ -14,7 +14,14 @@
     "deploy-l2": "graph deploy --product hosted-service sperax/vespa-arbione subgraph_L2.yaml",
     "create-local-l2": "graph create  --node http://localhost:8020/ sperax/veSPA-l2 subgraph_L2.yaml ",
     "remove-local-l2": "graph remove  --node http://localhost:8020/ sperax/veSPA-l2 subgraph_L2.yaml ",
-    "deploy-local-l2": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 sperax/veSPA-l2 subgraph_L2.yaml "
+    "deploy-local-l2": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 sperax/veSPA-l2 subgraph_L2.yaml ",
+ 
+    "codegen-xspa": "graph codegen xspa.yaml",
+    "build-xspa": "graph build xspa.yaml",
+    "deploy-xspa": "graph deploy --product hosted-service sperax/xspa xspa.yaml",
+    "create-local-xspa": "graph create  --node http://localhost:8020/ sperax/xspa xspa.yaml ",
+    "remove-local-xspa": "graph remove  --node http://localhost:8020/ sperax/xspa xspa.yaml ",
+    "deploy-local-xspa": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 sperax/xspa xspa.yaml "
     
   
   },
