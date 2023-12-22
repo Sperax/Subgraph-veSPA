@@ -1,4 +1,4 @@
-import { bigInt, BigInt } from "@graphprotocol/graph-ts";
+import { bigInt, BigInt,BigDecimal,Bytes } from "@graphprotocol/graph-ts";
 import {
   RewardDistributor_v1,
   CheckpointAllowed,
@@ -28,26 +28,21 @@ export function handleClaimed(event: Claimed): void {
   let entity = new veSPARewardClaimedEvent(
  event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
   );
-
+  let amounts = new Array<BigDecimal>(0);
   entity.recipient = event.params._recipient;
-  entity.rewardAmount = digitsConvert(event.params._amount);
+  amounts.push(digitsConvert(event.params._amount));
+  entity.rewardAmount = amounts;
   entity.staked = event.params._staked;
-  entity.lastRewardClaimTime = timestampConvertDateTime(
-    event.params._lastRewardClaimTime
-  );
   entity.rewardClaimTill = timestampConvertDateTime(
     event.params._rewardClaimedTill
   );
-  entity.lastRewardClaimTimeUnix = event.params._lastRewardClaimTime;
+ 
   entity.rewardClaimTillUnix = event.params._rewardClaimedTill;
   entity.version = BigInt.fromI32(1);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
   entity.transactionHash = event.transaction.hash;
-  entity.gasPrice = event.transaction.gasPrice;
-  entity.gasUsed = event.block.gasUsed;
-
   entity.save();
 }
 
@@ -88,12 +83,12 @@ export function handleRewardsCheckpointed(event: RewardsCheckpointed): void {
   );
   entity.amount = digitsConvert(event.params._amount);
   entity.version = BigInt.fromI32(1);
+  entity.numEpochs = BigInt.fromI32(1);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
   entity.transactionHash = event.transaction.hash;
-  entity.gasPrice = event.transaction.gasPrice;
-  entity.gasUsed = event.block.gasUsed;
+  entity.token= Bytes.fromHexString("0x5575552988A3A80504bBaeB1311674fCFd40aD4B")
   if (event.params._amount > BigInt.fromI32(0)) {
     entity.save();
   }
@@ -128,8 +123,7 @@ export function handleRecoveredERC20(event: RecoveredERC20): void {
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
   entity.transactionHash = event.transaction.hash;
-  entity.gasPrice = event.transaction.gasPrice;
-  entity.gasUsed = event.block.gasUsed;
+
 
   entity.save();
 }

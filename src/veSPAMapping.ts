@@ -122,6 +122,9 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
     activeHolder.activeHolder = event.params.provider
     activeHolder.depositedValue= BigDecimal.fromString("0")
     activeHolder.autoCooldown= false
+    activeHolder.expiryUnix = BigInt.fromI32(0); 
+    activeHolder.actionType = new Array<string>(0);
+    
     
   }
   let Holder = veSPAHolder.load(event.params.provider.toHex());
@@ -130,6 +133,13 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
     Holder = new veSPAHolder(event.params.provider.toHex());
     Holder.actionsCount = BigInt.fromI32(0);
     Holder.holders = arrayHolders;
+    Holder.actionType = new Array<string>(0);
+    Holder.Holder = event.params.provider
+    Holder.depositedValue= BigDecimal.fromString("0")
+    Holder.autoCooldown= false
+    Holder.rewardDistributed = BigDecimal.fromString("0")
+    Holder.totalRewardDistributed = BigDecimal.fromString("0")
+    
   }
   let totalActions = new Array<string>(0);
   let totalActionsNonActive = new Array<string>(0);
@@ -175,13 +185,6 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
           )
       );
 
-      let getbalance = contract.try_balanceOf1(event.params.provider);
-      if (getbalance.reverted) {
-        log.debug("veSPA Balance reverted", []);
-      } else {
-        depositFor.veSPABalance = digitsConvert(getbalance.value);
-      }
-
       depositFor.actionType = actionTypeConverter(event.params.actionType);
       depositFor.autoCooldown = event.params.autoCooldown;
       depositFor.provider = event.params.provider;
@@ -208,7 +211,6 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       totalActions = activeHolder.actionType;
       totalActions.push(actionTypeConverter(event.params.actionType));
       activeHolder.actionType = totalActions;
-      activeHolder.veSPABalance = depositFor.veSPABalance;
       // activeHolder.count = (BigInt.fromI32(1));
 
       Holder.actionsCount = activeHolder.actionsCount;
@@ -220,7 +222,6 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       totalActionsNonActive = Holder.actionType;
       totalActionsNonActive.push(actionTypeConverter(event.params.actionType));
       Holder.actionType = totalActionsNonActive;
-      Holder.veSPABalance = depositFor.veSPABalance;
 
       break;
     case 1:
@@ -242,12 +243,7 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
           )
       );
       // activeHolder.count = activeHolder.count.plus(BigInt.fromI32(1));
-      let getbalance1 = contract.try_balanceOf1(event.params.provider);
-      if (getbalance1.reverted) {
-        log.debug("veSPA Balance reverted", []);
-      } else {
-        createLock.veSPABalance = digitsConvert(getbalance1.value);
-      }
+
 
       createLock.actionType = actionTypeConverter(event.params.actionType);
       createLock.autoCooldown = event.params.autoCooldown;
@@ -277,7 +273,6 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       totalActions = activeHolder.actionType;
       totalActions.push(actionTypeConverter(event.params.actionType));
       activeHolder.actionType = totalActions;
-      activeHolder.veSPABalance = createLock.veSPABalance;
 
       Holder.actionsCount = activeHolder.actionsCount;
       Holder.Holder = event.params.provider;
@@ -288,7 +283,6 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       totalActionsNonActive = Holder.actionType;
       totalActionsNonActive.push(actionTypeConverter(event.params.actionType));
       Holder.actionType = totalActionsNonActive;
-      Holder.veSPABalance = createLock.veSPABalance;
 
       numberHolders.active = numberHolders.active.plus(BigInt.fromI32(1));
       numberHolders.all = numberHolders.all.plus(BigInt.fromI32(1));
@@ -306,12 +300,6 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
               .concat(event.block.number.toHexString())
           )
       );
-      let getbalance2 = contract.try_balanceOf1(event.params.provider);
-      if (getbalance2.reverted) {
-        log.debug("veSPA Balance reverted", []);
-      } else {
-        increaseAmount.veSPABalance = digitsConvert(getbalance2.value);
-      }
       increaseAmount.actionType = actionTypeConverter(event.params.actionType);
       increaseAmount.autoCooldown = event.params.autoCooldown;
       increaseAmount.provider = event.params.provider;
@@ -340,7 +328,6 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       totalActions = activeHolder.actionType;
       totalActions.push(actionTypeConverter(event.params.actionType));
       activeHolder.actionType = totalActions;
-      activeHolder.veSPABalance = increaseAmount.veSPABalance;
 
       Holder.actionsCount = activeHolder.actionsCount;
       Holder.Holder = event.params.provider;
@@ -351,7 +338,6 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       totalActionsNonActive = Holder.actionType;
       totalActionsNonActive.push(actionTypeConverter(event.params.actionType));
       Holder.actionType = totalActionsNonActive;
-      Holder.veSPABalance = increaseAmount.veSPABalance;
 
       break;
     case 3:
@@ -366,12 +352,7 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
               .concat(event.block.number.toHexString())
           )
       );
-      let getbalance3 = contract.try_balanceOf1(event.params.provider);
-      if (getbalance3.reverted) {
-        log.debug("veSPA Balance reverted", []);
-      } else {
-        increaseLockTime.veSPABalance = digitsConvert(getbalance3.value);
-      }
+
       increaseLockTime.actionType = actionTypeConverter(
         event.params.actionType
       );
@@ -403,7 +384,6 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       totalActions = activeHolder.actionType;
       totalActions.push(actionTypeConverter(event.params.actionType));
       activeHolder.actionType = totalActions;
-      activeHolder.veSPABalance = increaseLockTime.veSPABalance;
 
       Holder.actionsCount = activeHolder.actionsCount;
       Holder.Holder = event.params.provider;
@@ -414,7 +394,6 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       totalActionsNonActive = Holder.actionType;
       totalActionsNonActive.push(actionTypeConverter(event.params.actionType));
       Holder.actionType = totalActionsNonActive;
-      Holder.veSPABalance = increaseLockTime.veSPABalance;
 
       break;
     case 4:
@@ -429,12 +408,6 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
               .concat(event.block.number.toHexString())
           )
       );
-      let getbalance4 = contract.try_balanceOf1(event.params.provider);
-      if (getbalance4.reverted) {
-        log.debug("veSPA Balance reverted", []);
-      } else {
-        initiateCooldown.veSPABalance = digitsConvert(getbalance4.value);
-      }
 
       initiateCooldown.actionType = actionTypeConverter(
         event.params.actionType
@@ -466,10 +439,10 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       totalActions = activeHolder.actionType;
       totalActions.push(actionTypeConverter(event.params.actionType));
       activeHolder.actionType = totalActions;
-      activeHolder.veSPABalance = initiateCooldown.veSPABalance;
+
       activeHolder.expiryUnix = event.params.locktime;
       activeHolder.expiry = timestampConvertDateTime(event.params.locktime);
-      activeHolder.veSPABalance = initiateCooldown.veSPABalance;
+
 
       Holder.actionsCount = activeHolder.actionsCount;
       Holder.Holder = event.params.provider;
@@ -480,7 +453,7 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
       totalActionsNonActive = Holder.actionType;
       totalActionsNonActive.push(actionTypeConverter(event.params.actionType));
       Holder.actionType = totalActionsNonActive;
-      Holder.veSPABalance = initiateCooldown.veSPABalance;
+
       break;
   }
 

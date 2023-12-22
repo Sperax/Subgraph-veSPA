@@ -102,7 +102,6 @@ export function handleSPARedeemed(event: SPARedeemedEvent): void {
   entity.recipient = event.params._recipient;
   entity.requestId = event.params._requestId;
   entity.spaAmount = digitsConvert(event.params._spaAmount);
-
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;

@@ -7,7 +7,6 @@ type veSPAActiveHolder @entity {
   expiryUnix: BigInt!
   expiry: String!
   actionType: [String!]!
-  veSPABalance: BigDecimal!
   timeStamp: String!
   timeStampUnix: BigInt!
   blockNumber: BigInt!
@@ -28,8 +27,6 @@ type veSPAHolder @entity {
   expiryUnix: BigInt!
   expiry: String!
   actionType: [String!]!
-  veSPABalance: BigDecimal!
-  totalVeSPABalance:BigDecimal!
   rewardDistributed:BigDecimal!
   totalRewardDistributed:BigDecimal!
   timeStamp: String!
@@ -42,7 +39,7 @@ type holderReward @entity {
   id: ID!
   count:BigInt!
   holder:Bytes!
-  veSPABalance:BigDecimal!
+
   weeklyRewards:BigDecimal
   timeStamp: String!
   timeStampUnix: BigInt!
@@ -58,7 +55,7 @@ type veSPAUserCheckpointEvent @entity {
   expiryUnix: BigInt!
   expiry: String!
   actionType: String!
-  veSPABalance: BigDecimal!
+
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -77,7 +74,7 @@ type veSPACreateLockEvent @entity {
   expiryUnix: BigInt!
   expiry: String!
   actionType: String!
-  veSPABalance: BigDecimal!
+
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -92,7 +89,7 @@ type veSPAIncreaseAmountEvent @entity {
   depositedValue: BigDecimal!
   autoCooldown: Boolean!
   actionType: String!
-  veSPABalance: BigDecimal!
+
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -125,7 +122,6 @@ type veSPAIncreaseLockTimeEvent @entity {
   expiryUnix: BigInt!
   expiry: String!
   actionType: String!
-  veSPABalance: BigDecimal!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -142,7 +138,6 @@ type veSPAInitiateCooldownEvent @entity {
   expiryUnix: BigInt!
   expiry: String!
   actionType: String!
-  veSPABalance: BigDecimal!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -156,7 +151,6 @@ type veSPADepositForEvent @entity {
   depositedValue: BigDecimal!
   autoCooldown: Boolean!
   actionType: String!
-  veSPABalance: BigDecimal!
   gasPrice: BigInt!
   gasUsed: BigInt!
   timeStamp: String!
@@ -236,15 +230,11 @@ type veSPAWithdrawEvent @entity {
 type veSPARewardClaimedEvent @entity {
   id: ID!
   recipient: Bytes!
-  lastRewardClaimTimeUnix: BigInt!
   rewardClaimTillUnix: BigInt!
-  lastRewardClaimTime: String!
   rewardClaimTill: String!
-  rewardAmount: BigDecimal!
+  rewardAmount: [BigDecimal!]!
   staked: Boolean!
   version: BigInt!
-  gasPrice: BigInt!
-  gasUsed: BigInt!
   timeStamp: String!
   timeStampUnix: BigInt!
   blockNumber: BigInt!
@@ -264,9 +254,9 @@ type veSPARewardCheckpointAllowedEvent @entity {
 type veSPARewardCheckpointEvent @entity {
   id: ID!
   amount: BigDecimal!
+  token: Bytes!
   version: BigInt!
-  gasPrice: BigInt!
-  gasUsed: BigInt!
+  numEpochs: BigInt!
   timeStamp: String!
   timeStampUnix: BigInt!
   blockNumber: BigInt!
@@ -289,8 +279,6 @@ type veSPARecoverERC20Event @entity {
   tokenAddress: Bytes!
   amount: BigInt!
   version: BigInt!
-  gasPrice: BigInt!
-  gasUsed: BigInt!
   timeStamp: String!
   timeStampUnix: BigInt!
   blockNumber: BigInt!
@@ -327,15 +315,6 @@ type Initialized @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type OwnershipTransferred @entity(immutable: true) {
-  id: Bytes!
-  previousOwner: Bytes! # address
-  newOwner: Bytes! # address
-  timeStamp: String!
-  timeStampUnix: BigInt!
-  blockNumber: BigInt!
-  transactionHash: Bytes!
-}
 
 type RedemptionRequested @entity(immutable: true) {
   id: Bytes!
@@ -380,5 +359,25 @@ type Transfer @entity(immutable: true) {
   timeStamp: String!
   timeStampUnix: BigInt!
   blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+
+
+type RecoverRewardToken @entity(immutable: true) {
+  id: Bytes!
+  token: Bytes! # address
+  recipient: Bytes! # address
+  totalAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RegisterRewardToken @entity(immutable: true) {
+  id: Bytes!
+  token: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
   transactionHash: Bytes!
 }

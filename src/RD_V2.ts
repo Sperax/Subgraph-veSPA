@@ -1,4 +1,4 @@
-import { bigInt, BigInt } from "@graphprotocol/graph-ts";
+import { bigInt, BigInt, BigDecimal, Bytes } from "@graphprotocol/graph-ts";
 import {
   rewardDistributorV2,
   CheckpointAllowed,
@@ -26,34 +26,35 @@ import {
 
 export function handleClaimedV2(event: Claimed): void {
   let entity = new veSPARewardClaimedEvent(
- event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
+    event.transaction.hash
+      .toHex()
+      .concat("_")
+      .concat(event.logIndex.toString())
   );
-
+  let amounts = new Array<BigDecimal>(0);
   entity.recipient = event.params._recipient;
-  entity.rewardAmount = digitsConvert(event.params._amount);
+  amounts.push(digitsConvert(event.params._amount));
+  entity.rewardAmount = amounts;
   entity.staked = event.params._staked;
-  entity.lastRewardClaimTime = timestampConvertDateTime(
-    event.params._lastRewardClaimTime
-  );
   entity.rewardClaimTill = timestampConvertDateTime(
     event.params._rewardClaimedTill
   );
-  entity.lastRewardClaimTimeUnix = event.params._lastRewardClaimTime;
   entity.version = BigInt.fromI32(2);
   entity.rewardClaimTillUnix = event.params._rewardClaimedTill;
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
   entity.transactionHash = event.transaction.hash;
-  entity.gasPrice = event.transaction.gasPrice;
-  entity.gasUsed = event.block.gasUsed;
 
   entity.save();
 }
 
 export function handleCheckpointAllowedV2(event: CheckpointAllowed): void {
   let entity = new veSPARewardCheckpointAllowedEvent(
- event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
+    event.transaction.hash
+      .toHex()
+      .concat("_")
+      .concat(event.logIndex.toString())
   );
   entity.version = BigInt.fromI32(2);
   entity.allowed = event.params._allowed;
@@ -69,7 +70,10 @@ export function handleCheckpointAllowedV2(event: CheckpointAllowed): void {
 
 export function handleKilledV2(event: Killed): void {
   let entity = new veSPARewardKilledEvent(
- event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
+    event.transaction.hash
+      .toHex()
+      .concat("_")
+      .concat(event.logIndex.toString())
   );
   entity.version = BigInt.fromI32(2);
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
@@ -83,7 +87,10 @@ export function handleKilledV2(event: Killed): void {
 }
 export function handleRewardsCheckpointedV2(event: RewardsCheckpointed): void {
   let entity = new veSPARewardCheckpointEvent(
- event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
+    event.transaction.hash
+      .toHex()
+      .concat("_")
+      .concat(event.logIndex.toString())
   );
   entity.amount = digitsConvert(event.params._amount);
   entity.version = BigInt.fromI32(2);
@@ -91,8 +98,8 @@ export function handleRewardsCheckpointedV2(event: RewardsCheckpointed): void {
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
   entity.transactionHash = event.transaction.hash;
-  entity.gasPrice = event.transaction.gasPrice;
-  entity.gasUsed = event.block.gasUsed;
+  entity.numEpochs = BigInt.fromI32(1);
+  entity.token= Bytes.fromHexString("0x5575552988A3A80504bBaeB1311674fCFd40aD4B")
   if (event.params._amount > BigInt.fromI32(0)) {
     entity.save();
   }
@@ -102,7 +109,10 @@ export function handleMaxIterationsUpdatedV2(
   event: MaxIterationsUpdated
 ): void {
   let entity = new veSPARewardMaxItterationUpdate(
- event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
+    event.transaction.hash
+      .toHex()
+      .concat("_")
+      .concat(event.logIndex.toString())
   );
 
   entity.oldItteration = event.params._oldNo;
@@ -120,7 +130,10 @@ export function handleMaxIterationsUpdatedV2(
 
 export function handleRecoveredERC20V2(event: RecoveredERC20): void {
   let entity = new veSPARecoverERC20Event(
- event.transaction.hash.toHex().concat("_").concat(event.logIndex.toString())
+    event.transaction.hash
+      .toHex()
+      .concat("_")
+      .concat(event.logIndex.toString())
   );
   entity.tokenAddress = event.params._token;
   entity.amount = event.params._amount;
@@ -129,8 +142,7 @@ export function handleRecoveredERC20V2(event: RecoveredERC20): void {
   entity.timeStampUnix = event.block.timestamp;
   entity.blockNumber = event.block.number;
   entity.transactionHash = event.transaction.hash;
-  entity.gasPrice = event.transaction.gasPrice;
-  entity.gasUsed = event.block.gasUsed;
+
 
   entity.save();
 }
