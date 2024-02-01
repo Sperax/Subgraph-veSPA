@@ -123,7 +123,12 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
     activeHolder.depositedValue= BigDecimal.fromString("0")
     activeHolder.autoCooldown= false
     activeHolder.expiryUnix = BigInt.fromI32(0); 
+    activeHolder.expiry = timestampConvertDateTime(BigInt.fromI32(0));
     activeHolder.actionType = new Array<string>(0);
+    activeHolder.timeStamp = timestampConvertDateTime(event.block.timestamp);
+    activeHolder.timeStampUnix = event.block.timestamp;
+    activeHolder.blockNumber = event.block.number;
+    activeHolder.transactionHash = event.transaction.hash;
     
     
   }
@@ -137,8 +142,15 @@ export function handleUserCheckpoint(event: UserCheckpoint): void {
     Holder.Holder = event.params.provider
     Holder.depositedValue= BigDecimal.fromString("0")
     Holder.autoCooldown= false
+    Holder.expiryUnix = BigInt.fromI32(0);
+    Holder.expiry = timestampConvertDateTime(BigInt.fromI32(0));
+    Holder.actionType = new Array<string>(0);
     Holder.rewardDistributed = BigDecimal.fromString("0")
     Holder.totalRewardDistributed = BigDecimal.fromString("0")
+    Holder.timeStamp = timestampConvertDateTime(event.block.timestamp);
+    Holder.timeStampUnix = event.block.timestamp;
+    Holder.blockNumber = event.block.number;
+    Holder.transactionHash = event.transaction.hash;
     
   }
   let totalActions = new Array<string>(0);
@@ -521,12 +533,33 @@ export function handleWithdraw(event: Withdraw): void {
   let numberHolders = veSPANumberHolder.load("veSPA Holders");
   if (!numberHolders) {
     numberHolders = new veSPANumberHolder("veSPA Holders");
+    numberHolders.active = BigInt.fromI32(0);
+    numberHolders.all = BigInt.fromI32(0);
+
   }
 
   let Holder = veSPAHolder.load(event.params.provider.toHex());
   if (!Holder) {
     Holder = new veSPAHolder(event.params.provider.toHex());
+
+    Holder = new veSPAHolder(event.params.provider.toHex());
     Holder.actionsCount = BigInt.fromI32(0);
+    Holder.holders = new Array<Bytes>(0);
+    Holder.actionType = new Array<string>(0);
+    Holder.Holder = event.params.provider
+    Holder.depositedValue= BigDecimal.fromString("0")
+    Holder.autoCooldown= false
+    Holder.expiryUnix = BigInt.fromI32(0);
+    Holder.expiry = timestampConvertDateTime(BigInt.fromI32(0));
+    Holder.actionType = new Array<string>(0);
+    Holder.rewardDistributed = BigDecimal.fromString("0")
+    Holder.totalRewardDistributed = BigDecimal.fromString("0")
+    Holder.timeStamp = timestampConvertDateTime(event.block.timestamp);
+    Holder.timeStampUnix = event.block.timestamp;
+    Holder.blockNumber = event.block.number;
+    Holder.transactionHash = event.transaction.hash;
+    
+
   }
 
   let entity = new veSPAWithdrawEvent(
