@@ -1,21 +1,171 @@
-specVersion: 0.0.5
+specVersion: 0.0.7
 schema:
-  file: ./schema.graphql
+  file: ./veSPA.graphql
 dataSources:
+  - kind: ethereum
+    name: veSPA
+    network: arbitrum-one
+    source:
+      address: "0x2e2071180682Ce6C247B1eF93d382D509F5F6A17"
+      abi: veSPA
+      # startBlock: 9349300
+      startBlock: 171027893
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - GlobalCheckpoint
+        - OwnershipTransferred
+        - Supply
+        - UserCheckpoint
+        - Withdraw
+      abis:
+        - name: veSPA
+          file: ./abis/veSPA.json
+      eventHandlers:
+        - event: GlobalCheckpoint(address,uint256)
+          handler: handleGlobalCheckpoint
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Supply(uint256,uint256)
+          handler: handleSupply
+        - event: UserCheckpoint(indexed uint8,bool,indexed address,uint256,indexed uint256)
+          handler: handleUserCheckpoint
+        - event: Withdraw(indexed address,uint256,uint256)
+          handler: handleWithdraw
+      file: ./src/veSPAMapping.ts
+
+  - kind: ethereum
+    name: RewardDistributor_v1
+    network: arbitrum-one
+    source:
+      address: "0x2c07bc934974BbF413a4a4CeDA98713DCb8d9e16"
+      abi: RewardDistributor_v1
+      # startBlock: 9719072
+      startBlock: 171027893
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CheckpointAllowed
+        - Claimed
+        - Killed
+        - MaxIterationsUpdated
+        - OwnershipTransferred
+        - RecoveredERC20
+        - RewardsCheckpointed
+      abis:
+        - name: RewardDistributor_v1
+          file: ./abis/RewardDistributor_v1.json
+      eventHandlers:
+        - event: CheckpointAllowed(bool)
+          handler: handleCheckpointAllowed
+        - event: Claimed(indexed address,bool,uint256,uint256,uint256)
+          handler: handleClaimed
+        - event: Killed()
+          handler: handleKilled
+        - event: MaxIterationsUpdated(uint256,uint256)
+          handler: handleMaxIterationsUpdated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RecoveredERC20(address,uint256)
+          handler: handleRecoveredERC20
+        - event: RewardsCheckpointed(uint256)
+          handler: handleRewardsCheckpointed
+      file: ./src/RD.ts
+  - kind: ethereum
+    name: rewardDistributorV2
+    network: arbitrum-one
+    source:
+      address: "0xC9869e40e36A18546Df54A941B28aF21674aE512"
+      abi: rewardDistributorV2
+      # startBlock: 24747020
+      startBlock: 171027893
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CheckpointAllowed
+        - Claimed
+        - Killed
+        - MaxIterationsUpdated
+        - OwnershipTransferred
+        - RecoveredERC20
+        - RewardsCheckpointed
+      abis:
+        - name: rewardDistributorV2
+          file: ./abis/rewardDistributorV2.json
+      eventHandlers:
+        - event: CheckpointAllowed(bool)
+          handler: handleCheckpointAllowedV2
+        - event: Claimed(indexed address,bool,uint256,uint256,uint256)
+          handler: handleClaimedV2
+        - event: Killed()
+          handler: handleKilledV2
+        - event: MaxIterationsUpdated(uint256,uint256)
+          handler: handleMaxIterationsUpdatedV2
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferredV2
+        - event: RecoveredERC20(address,uint256)
+          handler: handleRecoveredERC20V2
+        - event: RewardsCheckpointed(uint256)
+          handler: handleRewardsCheckpointedV2
+      file: ./src/RD_V2.ts
+  # - kind: ethereum
+  #   name: xSPA
+  #   network: arbitrum-one
+  #   source:
+  #     address: "0x0966E72256d6055145902F72F9D3B6a194B9cCc3"
+  #     abi: xSPA
+  #     startBlock: 128257830
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Approval
+  #       - Initialized
+  #       - OwnershipTransferred
+  #       - RedemptionRequested
+  #       - SPARedeemed
+  #       - StakedInVeSPA
+  #       - Transfer
+  #     abis:
+  #       - name: xSPA
+  #         file: ./abis/xSPA.json
+  #     eventHandlers:
+  #       - event: Approval(indexed address,indexed address,uint256)
+  #         handler: handleApproval
+  #       - event: Initialized(uint8)
+  #         handler: handleInitialized
+  #       - event: OwnershipTransferred(indexed address,indexed address)
+  #         handler: handleOwnershipTransferred
+  #       - event: RedemptionRequested(indexed address,uint256,uint256,uint256)
+  #         handler: handleRedemptionRequested
+  #       - event: SPARedeemed(indexed address,indexed address,uint256,uint256)
+  #         handler: handleSPARedeemed
+  #       - event: StakedInVeSPA(indexed address,uint128)
+  #         handler: handleStakedInVeSPA
+  #       - event: Transfer(indexed address,indexed address,uint256)
+  #         handler: handleTransfer
+  #     file: ./src/x-spa.ts
   - kind: ethereum
     name: RD_V3
     network: arbitrum-one
     source:
-      address: "0x5ed5c72d24ff0931e5a38c2969160dfe259e7c06"
+      address: "0x5ed5c72d24ff0931e5a38c2969160dfe259e7c05"
       abi: RD_V3
-      startBlock: 161891965
+      # startBlock: 161891965
+      startBlock: 171027893
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Claimed
-        - OwnershipTransferred
         - RecoveredERC20
         - RewardAdded
         - RewardTokenRecovered
@@ -26,8 +176,6 @@ dataSources:
       eventHandlers:
         - event: Claimed(indexed address,uint256,uint256[])
           handler: handleClaimed
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
         - event: RecoveredERC20(indexed address,uint256)
           handler: handleRecoveredERC20
         - event: RewardAdded(indexed address,uint256,uint256)
