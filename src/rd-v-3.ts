@@ -5,6 +5,7 @@ import {
   log,
   Bytes,
   store,
+  bigDecimal,
 } from "@graphprotocol/graph-ts";
 import {
   Claimed as ClaimedEvent,
@@ -26,6 +27,7 @@ import {
   veSPARewardClaimedEvent,
   veSPARewardCheckpointEvent,
   veSPARecoverERC20Event,
+  WeeklyDistributedReward,
 } from "../generated/schema";
 
 export function handleClaimed(event: ClaimedEvent): void {
@@ -51,8 +53,6 @@ export function handleClaimed(event: ClaimedEvent): void {
   entity.save();
 }
 
-
-
 export function handleRecoveredERC20(event: RecoveredERC20Event): void {
   let entity = new veSPARecoverERC20Event(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
@@ -70,6 +70,73 @@ export function handleRecoveredERC20(event: RecoveredERC20Event): void {
 }
 
 export function handleRewardAdded(event: RewardAddedEvent): void {
+  let nextThursday = event.block.timestamp
+    .minus(event.block.timestamp.mod(BigInt.fromI32(604800)))
+    .plus(BigInt.fromI32(604800));
+
+  let epoch = event.params.numEpochs.toU32() as i32;
+  if (
+    event.params.token ==
+    Address.fromHexString("0x5575552988a3a80504bbaeb1311674fcfd40ad4b")
+  ) {
+    for (let i = 0; i < epoch; i++) {
+      let weekly = WeeklyDistributedReward.load(
+        timestampConvertDate(
+          nextThursday.plus(BigInt.fromI32(604800).times(BigInt.fromU32(i)))
+        )
+      );
+      if (!weekly) {
+        weekly = new WeeklyDistributedReward(
+          timestampConvertDate(
+            nextThursday.plus(BigInt.fromI32(604800).times(BigInt.fromU32(i)))
+          )
+        );
+        weekly.SPADistributed = BigDecimal.fromString("0");
+        weekly.xSPADistributed = BigDecimal.fromString("0");
+        weekly.distributionTimeStamp = nextThursday.plus(
+          BigInt.fromI32(604800).times(BigInt.fromI32(i))
+        );
+        weekly.save();
+      }
+      weekly.SPADistributed = weekly.SPADistributed.plus(
+        digitsConvert(event.params.amount).div(
+          event.params.numEpochs.toBigDecimal()
+        )
+      );
+      weekly.save();
+    }
+  } else if (
+    event.params.token ==
+    Address.fromHexString("0x0966e72256d6055145902f72f9d3b6a194b9ccc3")
+  ) {
+    for (let i = 0; i < epoch; i++) {
+      let weekly = WeeklyDistributedReward.load(
+        timestampConvertDate(
+          nextThursday.plus(BigInt.fromI32(604800).times(BigInt.fromI32(i)))
+        )
+      );
+      if (!weekly) {
+        weekly = new WeeklyDistributedReward(
+          timestampConvertDate(
+            nextThursday.plus(BigInt.fromI32(604800).times(BigInt.fromI32(i)))
+          )
+        );
+        weekly.SPADistributed = BigDecimal.fromString("0");
+        weekly.xSPADistributed = BigDecimal.fromString("0");
+        weekly.distributionTimeStamp = nextThursday.plus(
+          BigInt.fromI32(604800).times(BigInt.fromI32(i))
+        );
+        weekly.save();
+      }
+      weekly.xSPADistributed = weekly.xSPADistributed.plus(
+        digitsConvert(event.params.amount).div(
+          event.params.numEpochs.toBigDecimal()
+        )
+      );
+      weekly.save();
+    }
+  }
+
   let entity = new veSPARewardCheckpointEvent(
     event.transaction.hash.concatI32(event.logIndex.toI32()).toHexString()
   );
@@ -81,7 +148,6 @@ export function handleRewardAdded(event: RewardAddedEvent): void {
   entity.timeStampUnix = event.block.timestamp;
   entity.timeStamp = timestampConvertDateTime(event.block.timestamp);
   entity.transactionHash = event.transaction.hash;
-
   entity.save();
 }
 

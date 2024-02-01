@@ -251,6 +251,12 @@ type veSPARewardCheckpointAllowedEvent @entity {
   blockNumber: BigInt!
   transactionHash: Bytes!
 }
+type WeeklyDistributedReward @entity {
+  id: ID!
+  xSPADistributed: BigDecimal!
+  SPADistributed: BigDecimal!
+  distributionTimeStamp: BigInt!
+}
 type veSPARewardCheckpointEvent @entity {
   id: ID!
   amount: BigDecimal!
